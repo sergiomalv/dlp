@@ -1,4 +1,4 @@
-package ast.Types;
+package ast.types;
 
 /**
  * Represents an array, it must have a size > 0

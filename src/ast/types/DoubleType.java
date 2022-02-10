@@ -1,4 +1,4 @@
-package ast.Types;
+package ast.types;
 
 /**
  * Represents an instance of DoubleType
