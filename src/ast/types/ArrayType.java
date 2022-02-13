@@ -7,7 +7,7 @@ package ast.types;
 public class ArrayType extends AbstractType{
 
     // Variables of the class
-    private int size;   // Size of the array
+    private int dimension;   // Size of the array
     private Type type;  // Type of the array
 
     /**
@@ -17,10 +17,10 @@ public class ArrayType extends AbstractType{
      * @param size, size of the array
      * @param type, type of the array
      */
-    public ArrayType(int line, int column, int size, Type type) {
+    public ArrayType(int line, int column, int dimension, Type type) {
         super(line, column);
-        checkParams(size,type);
-        this.size = size;
+        checkParams(dimension,type);
+        this.dimension = dimension;
         this.type = type;
     }
 
