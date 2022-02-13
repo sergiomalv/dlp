@@ -9,6 +9,7 @@ public class Logic extends AbstractExpression {
     // Variables of the class
     private Expression left;    // Left expression
     private Expression right;   // Right expression
+    private String operator;    // Operator of the logic expression
 
     /**
      * Constructor of a logic expression
@@ -16,23 +17,29 @@ public class Logic extends AbstractExpression {
      * @param column
      * @param left, left expression
      * @param right, right expression
+     * @param operator, operator of the expression
      */
-    public Logic(int line, int column, Expression left, Expression right) {
+    public Logic(int line, int column, Expression left, Expression right, String operator) {
         super(line, column);
-        checkParams(left, right);
+        checkParams(left, right, operator);
         this.left = left;
         this.right = right;
+        this.operator = operator;
     }
 
     /**
      * Check the params of the constructor
-     * @param expressions
+     * @param left, left expression
+     * @param right, right expression
+     * @param operator, operator of the expression
      */
-    private void checkParams(Expression... expressions){
-        for (Expression expression : expressions){
-            if (expression == null){
-                throw new IllegalArgumentException("Expression shouldn't be null");
-            }
+    private void checkParams(Expression left, Expression right, String operator){
+        if (left == null ||right == null){
+            throw new IllegalArgumentException("Expression shouldn't be null");
+        }
+
+        if (operator.trim().isEmpty() || operator == null){
+            throw new IllegalArgumentException("Operator is invalid");
         }
     }
 }
