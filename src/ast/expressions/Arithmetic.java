@@ -30,7 +30,9 @@ public class Arithmetic extends AbstractExpression{
      */
     private void checkParam(Expression... expressions){
         for (Expression expression : expressions){
-            throw new IllegalArgumentException("Expression shouldn't be null");
+            if (expression == null) {
+                throw new IllegalArgumentException("Expression shouldn't be null");
+            }
         }
     }
 }

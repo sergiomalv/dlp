@@ -30,6 +30,9 @@ public class Input extends AbstractStatement {
      * @param expressions
      */
     private void checkParams(List<Expression> expressions){
+        if (expressions == null){
+            throw new IllegalArgumentException("The list of expressions shouldn't be null");
+        }
         if (expressions.isEmpty()){
             throw new IllegalArgumentException("There has to be at least an expression");
         }

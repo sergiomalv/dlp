@@ -32,6 +32,9 @@ public class While extends AbstractStatement {
         if (expression == null){
             throw new IllegalArgumentException("Expression shouldn't be null");
         }
+        if (statements == null){
+            throw new IllegalArgumentException("The list of statements shouldn't be null");
+        }
         for (Statement statement : statements){
             if (statement == null){
                 throw new IllegalArgumentException("Statement shouldn't be null");

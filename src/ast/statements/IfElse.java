@@ -42,6 +42,12 @@ public class IfElse extends AbstractStatement {
         if (expression == null){
             throw new IllegalArgumentException("Expression shouldn't be null");
         }
+        if (ifBody == null){
+            throw new IllegalArgumentException("The list of statement of [if] shouldn't be null");
+        }
+        if (ifBody == null){
+            throw new IllegalArgumentException("The list of statement of [else] shouldn't be null");
+        }
         for (Statement statement : ifBody){
             if (statement == null){
                 throw new IllegalArgumentException("Statement shouldn't be null");

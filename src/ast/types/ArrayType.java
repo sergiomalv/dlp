@@ -14,7 +14,7 @@ public class ArrayType extends AbstractType{
      * Constructor of an array
      * @param line
      * @param column
-     * @param size, size of the array
+     * @param dimension, size of the array
      * @param type, type of the array
      */
     public ArrayType(int line, int column, int dimension, Type type) {
