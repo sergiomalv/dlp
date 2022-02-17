@@ -23,12 +23,13 @@ public class LexerHelper {
 	}
 
 	public static char lexemeToChar(String str){
+		char c = 9999;
 		try {
-			numberFormat(str);
+			c = numberFormat(str);
 		} catch(NumberFormatException e) {
-			return stringFormat(str);
+			c = stringFormat(str);
 		}
-		return 9999;
+		return c;
 	}
 
 	private static char numberFormat(String str) {
@@ -37,10 +38,10 @@ public class LexerHelper {
 	}
 
 	private static char stringFormat(String str) {
-		if ("'\n'".equals(str)) {
+		if ("'\\n'".equals(str)) {
 			return '\n';
 		}
-		if ("'\t'".equals(str)) {
+		if ("'\\t'".equals(str)) {
 			return '\t';
 		} else {
 			return str.charAt(1);
