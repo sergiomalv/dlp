@@ -1,7 +1,60 @@
 grammar Pmm;
 
-program:
+program: (createFunction | createVar)* functionMain EOF
        ;
+
+types: 'int' | 'double' | 'char'
+        | 'struct' '{' (ID ':' types ';')+ '}'
+        | ('['INT_CONSTANT']')+ ('int' | 'double' | 'char')
+        ;
+
+createFunction: 'def' ID '(' parametres? ')'':' types? '{' bodyFunction '}'
+        ;
+
+createVar: vars ':' types ';'
+        ;
+vars: ID | ID ',' vars
+        ;
+
+parametres: ID ':' types | ID ':' types ',' parametres
+        ;
+bodyFunction: createVar* sentences*
+        ;
+
+sentences: 'print' sentence ';'
+        | 'input' sentence ';'
+        | expression '=' expression ';'
+        | 'if' expression ':' conditionBody ('else' conditionBody)?
+        | 'while' expression ':' conditionBody
+        | 'return' expression ';'
+        | 'print'? ID '(' args? ')' ';'
+        ;
+args: expression | expression ',' args
+        ;
+sentence: expression | expression ',' sentence
+        |
+        ;
+conditionBody: sentences | '{' sentences+ '}'
+        ;
+
+functionMain: 'def main()' ':' '{' bodyFunction '}'
+        ;
+
+expression: INT_CONSTANT
+        | REAL_CONSTANT
+        | CHAR_CONSTANT
+        | ID
+        | '(' expression ')'
+        | ID ('[' expression ']')+
+        | expression'.'expression
+        | '('types')' expression
+        | '-' expression
+        | '!' expression
+        | expression ('*'|'/'|'%') expression
+        | expression ('+'|'-') expression
+        | expression ('>'|'>='|'<'|'<='|'!='|'==') expression
+        | expression ('&&'|'||') expression
+        ;
 
 fragment
 LETTER: [a-z|A-Z];

@@ -16,4 +16,76 @@ public interface PmmVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitProgram(PmmParser.ProgramContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#types}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypes(PmmParser.TypesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#createFunction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreateFunction(PmmParser.CreateFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#createVar}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreateVar(PmmParser.CreateVarContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#vars}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVars(PmmParser.VarsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#parametres}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParametres(PmmParser.ParametresContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#bodyFunction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBodyFunction(PmmParser.BodyFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#sentences}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSentences(PmmParser.SentencesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#args}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArgs(PmmParser.ArgsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#sentence}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSentence(PmmParser.SentenceContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#conditionBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConditionBody(PmmParser.ConditionBodyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#functionMain}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionMain(PmmParser.FunctionMainContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpression(PmmParser.ExpressionContext ctx);
 }

@@ -1,7 +1,12 @@
 grammar Pmm;
 
-program:
+program: expression EOF
        ;
+
+expression: INT_CONSTANT
+        | REAL_CONSTANT
+        | CHAR_CONSTANT
+        ;
 
 fragment
 LETTER: [a-z|A-Z];
