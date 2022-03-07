@@ -1,7 +1,19 @@
 grammar Pmm;
 
-program: (createFunction | createVar)* functionMain EOF
+@header{
+import ast.*;
+import ast.definitions.*;
+import ast.expressions.*;
+import ast.statements.*;
+import ast.types.*;
+}
+
+/*program: (createFunction | createVar)* functionMain EOF
        ;
+*/
+program returns [Expression ast]:
+        expression { $ast= $expression.ast; }
+        ;
 
 types: 'int' | 'double' | 'char'
         | 'struct' '{' (ID ':' types ';')+ '}'
@@ -40,18 +52,22 @@ conditionBody: sentences | '{' sentences+ '}'
 functionMain: 'def main()' ':' '{' bodyFunction '}'
         ;
 
-expression: INT_CONSTANT
-        | REAL_CONSTANT
+expression returns [Expression ast]: INT_CONSTANT {$ast = new IntLiteral($INT_CONSTANT.getLine(),
+            $INT_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToInt($INT_CONSTANT.text));}
+        | REAL_CONSTANT {$ast = new DoubleLiteral($REAL_CONSTANT.getLine(),
+            $REAL_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToReal($REAL_CONSTANT.text));}
         | CHAR_CONSTANT
-        | ID
+        | ID {$ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text); }
         | '(' expression ')'
-        | ID ('[' expression ']')+
-        | expression'.'expression
+        | expression '[' expression ']'
+        | expression'.'ID
         | '('types')' expression
         | '-' expression
         | '!' expression
-        | expression ('*'|'/'|'%') expression
-        | expression ('+'|'-') expression
+        | op1=expression OP=('*'|'/'|'%') op2=expression {$ast = new Arithmetic($op1.ast.getLine(),
+            $op1.ast.getColumn(), $op1.ast, $op2.ast, $OP.text);}
+        | op1=expression OP=('+'|'-') op2=expression {$ast = new Arithmetic($op1.ast.getLine(),
+            $op1.ast.getColumn(), $op1.ast, $op2.ast, $OP.text);}
         | expression ('>'|'>='|'<'|'<='|'!='|'==') expression
         | expression ('&&'|'||') expression
         ;

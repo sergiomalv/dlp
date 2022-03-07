@@ -1,11 +1,75 @@
 grammar Pmm;
 
-program: expression EOF
-       ;
+@header{
+import ast.*;
+import ast.definitions.*;
+import ast.expressions.*;
+import ast.statements.*;
+import ast.types.*;
+}
 
-expression: INT_CONSTANT
-        | REAL_CONSTANT
+/*program: (createFunction | createVar)* functionMain EOF
+       ;
+*/
+program returns [Expression ast]:
+        expression { $ast= $expression.ast; }
+        ;
+
+types: 'int' | 'double' | 'char'
+        | 'struct' '{' (ID ':' types ';')+ '}'
+        | ('['INT_CONSTANT']')+ ('int' | 'double' | 'char')
+        ;
+
+createFunction: 'def' ID '(' parametres? ')'':' types? '{' bodyFunction '}'
+        ;
+
+createVar: vars ':' types ';'
+        ;
+vars: ID | ID ',' vars
+        ;
+
+parametres: ID ':' types | ID ':' types ',' parametres
+        ;
+bodyFunction: createVar* sentences*
+        ;
+
+sentences: 'print' sentence ';'
+        | 'input' sentence ';'
+        | expression '=' expression ';'
+        | 'if' expression ':' conditionBody ('else' conditionBody)?
+        | 'while' expression ':' conditionBody
+        | 'return' expression ';'
+        | 'print'? ID '(' args? ')' ';'
+        ;
+args: expression | expression ',' args
+        ;
+sentence: expression | expression ',' sentence
+        |
+        ;
+conditionBody: sentences | '{' sentences+ '}'
+        ;
+
+functionMain: 'def main()' ':' '{' bodyFunction '}'
+        ;
+
+expression returns [Expression ast]: INT_CONSTANT {$ast = new IntLiteral($INT_CONSTANT.getLine(),
+            $INT_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToInt($INT_CONSTANT.text));}
+        | REAL_CONSTANT {$ast = new DoubleLiteral($REAL_CONSTANT.getLine(),
+            $REAL_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToReal($REAL_CONSTANT.text));}
         | CHAR_CONSTANT
+        | ID {$ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text); }
+        | '(' expression ')'
+        | expression '[' expression ']'
+        | expression'.'ID
+        | '('types')' expression
+        | '-' expression
+        | '!' expression
+        | op1=expression OP=('*'|'/'|'%') op2=expression {$ast = new Arithmetic($op1.ast.getLine(),
+            $op1.ast.getColumn(), $op1.ast, $op2.ast, $OP.text);}
+        | op1=expression OP=('+'|'-') op2=expression {$ast = new Arithmetic($op1.ast.getLine(),
+            $op1.ast.getColumn(), $op1.ast, $op2.ast, $OP.text);}
+        | expression ('>'|'>='|'<'|'<='|'!='|'==') expression
+        | expression ('&&'|'||') expression
         ;
 
 fragment

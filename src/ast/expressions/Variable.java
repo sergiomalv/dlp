@@ -30,4 +30,9 @@ public class Variable extends AbstractExpression {
             throw new IllegalArgumentException("Invalid name");
         }
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
