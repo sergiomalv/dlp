@@ -19,10 +19,15 @@ public class DoubleType extends AbstractType{
      * Return the instance of DoubleType or create if it's null
      * @return doubleType
      */
-    public static DoubleType getCharType(){
+    public static DoubleType getDoubleType(){
         if (doubleType == null){
             doubleType = new DoubleType();
         }
         return doubleType;
+    }
+
+    @Override
+    public String toString() {
+        return "double";
     }
 }

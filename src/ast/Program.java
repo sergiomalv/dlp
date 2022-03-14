@@ -67,4 +67,13 @@ public class Program implements AstNode{
             }
         }
     }
+
+    @Override
+    public String toString() {
+        String result = "";
+        for (Definition def : definitions){
+            result += def.toString() + "\n";
+        }
+        return result;
+    }
 }

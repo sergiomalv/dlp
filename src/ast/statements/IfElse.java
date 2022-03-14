@@ -53,10 +53,18 @@ public class IfElse extends AbstractStatement {
                 throw new IllegalArgumentException("Statement shouldn't be null");
             }
         }
-        for (Statement statement : elseBody){
-            if (statement == null){
-                throw new IllegalArgumentException("Statement shouldn't be null");
-            }
+    }
+
+    @Override
+    public String toString() {
+        String result = "if " + expression.toString() + " :\n";
+        for (Statement statement : ifBody)
+            result += "\t" + statement.toString() + "\n";
+        if (elseBody != null){
+            result+= "else:";
+            for (Statement statement : elseBody)
+                result += "\t" + statement.toString() + "\n";
         }
+        return result;
     }
 }

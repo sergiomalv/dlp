@@ -3,11 +3,11 @@ i, j, n: int;
 c: char;
 
 # Empty function
-def p(): { }
+def p(): {}
 
 def f(n: int,r: double): int {
   	real: double;
-  	c1, c2: char;  
+  	c1, c2: char;
 	c1 = (char)n;
   	real = (double)c1 + (double)n + r;
   	p(); # Invocation as a statement
@@ -24,10 +24,10 @@ def main(): {
     	integer: int;
     	character: char;
   	};
-  	
+
   	# Array
   	vector: [10][5]int;
-  	  
+
   	i=0;
   	j=0;
   	while i<10 : {
@@ -36,15 +36,15 @@ def main(): {
       		j=j+1;
 		}
 		i=i+1;
-  	} 	
-  	
+  	}
+
   	i=0;
 	pair.character = '0';
   	pair.integer = 48;
   	while pair.integer >= i: {
     	if pair.integer == vector[0][0] || !(int)pair.character || i%2==0:
       		print 't', 'r', 'u', 'e', '\n';
-    	else 
+    	else
       		print 'f', 'a', 'l', 's', 'e', '\n';
     	i=i+1;
   	}

@@ -19,10 +19,15 @@ public class IntType extends AbstractType{
      * Return the instance of IntType or create if it's null
      * @return intType
      */
-    public static IntType getCharType(){
+    public static IntType getIntType(){
         if (intType == null){
             intType = new IntType();
         }
         return intType;
+    }
+
+    @Override
+    public String toString() {
+        return "int";
     }
 }

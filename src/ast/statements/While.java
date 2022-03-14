@@ -2,6 +2,7 @@ package ast.statements;
 
 import ast.expressions.Expression;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ public class While extends AbstractStatement {
 
     // Variables of the class
     private Expression expression;  // Expression of the condition
-    List<Statement> statements;     // Statements of the loop
+    private List<Statement> statements;     // Statements of the loop
 
     /**
      * Constructor of the while loop
@@ -35,10 +36,20 @@ public class While extends AbstractStatement {
         if (statements == null){
             throw new IllegalArgumentException("The list of statements shouldn't be null");
         }
+
         for (Statement statement : statements){
             if (statement == null){
                 throw new IllegalArgumentException("Statement shouldn't be null");
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        String result = "while " + expression.toString() + "\n";
+        for (Statement statement : statements){
+            result+= "\t" + statement + ";\n";
+        }
+        return result;
     }
 }

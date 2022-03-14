@@ -1,5 +1,9 @@
 package ast.types;
 
+import ast.expressions.Expression;
+
+import java.util.List;
+
 /**
  * Represents an array, it must have a size > 0
  * @author Sergio
@@ -19,23 +23,23 @@ public class ArrayType extends AbstractType{
      */
     public ArrayType(int line, int column, int dimension, Type type) {
         super(line, column);
-        checkParams(dimension,type);
+        checkParams(type);
         this.dimension = dimension;
         this.type = type;
     }
 
     /**
      * Check the params of the constructor
-     * @param number, must be bigger than 0
      * @param type, shouldn't be null
      */
-    private void checkParams(int number, Type type){
-        if (number <= 0){
-            throw new IllegalArgumentException("The size must be bigger than 0");
-        }
+    private void checkParams(Type type){
         if (type == null){
             throw new IllegalArgumentException("Type shouldn't be null");
         }
     }
 
+    @Override
+    public String toString() {
+        return "[" + dimension + "]" + type.toString();
+    }
 }

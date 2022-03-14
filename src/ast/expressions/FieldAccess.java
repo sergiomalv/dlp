@@ -37,4 +37,9 @@ public class FieldAccess extends AbstractExpression{
             throw new IllegalArgumentException("Invalid name");
         }
     }
+
+    @Override
+    public String toString() {
+        return expression.toString() + "." + fieldName;
+    }
 }

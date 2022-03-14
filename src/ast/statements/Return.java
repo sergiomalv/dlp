@@ -32,4 +32,9 @@ public class Return extends AbstractStatement{
             throw new IllegalArgumentException("Expression shouldn't be null");
         }
     }
+
+    @Override
+    public String toString() {
+        return "return " + expression.toString() + ";";
+    }
 }

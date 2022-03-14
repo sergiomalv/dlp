@@ -1,5 +1,7 @@
 package ast.types;
 
+import java.util.List;
+
 /**
  * Represents a Field
  * @author Sergio
@@ -7,8 +9,8 @@ package ast.types;
 public class FieldType extends AbstractType{
 
     // Variables of the class
-    private String name;    //Name that identifies a field
-    private Type type;      // Type of the field
+    private List<String> name;    //Name that identifies a field
+    private Type type;            // Type of the field
 
     /**
      * Constructor of a field
@@ -17,9 +19,9 @@ public class FieldType extends AbstractType{
      * @param name, identifier
      * @param type, type of the field
      */
-    public FieldType(int line, int column, String name, Type type) {
+    public FieldType(int line, int column, List<String> name, Type type) {
         super(line, column);
-        checkParams(name, type);
+        //checkParams(name, type);
         this.name = name;
         this.type = type;
     }
@@ -36,5 +38,21 @@ public class FieldType extends AbstractType{
         if (type == null){
             throw new IllegalArgumentException("Type shouldn't be null");
         }
+    }
+
+    @Override
+    public String toString() {
+        String result = "";
+        int counter = 0;
+
+        for (String n : name){
+            if (counter == name.size() -1){
+                result += n + ": " + type.toString();
+            } else {
+                result += n + ", ";
+            }
+        }
+
+        return result;
     }
 }

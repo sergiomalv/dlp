@@ -36,8 +36,24 @@ public class Input extends AbstractStatement {
         if (expressions.isEmpty()){
             throw new IllegalArgumentException("There has to be at least an expression");
         }
-        for (Expression expression : expressions){
-            throw new IllegalArgumentException("Expression shouldn't be null");
+
+        for (Expression expression : expressions) {
+            if (expression == null)
+                throw new IllegalArgumentException("Expression shouldn't be null");
         }
+    }
+
+    @Override
+    public String toString() {
+        String result = "input ";
+        int counter = 0;
+        for (Expression expression : expressions){
+            if (counter == expressions.size() -1){
+                result += expression;
+            } else {
+                result += expression + ", ";
+            }
+        }
+        return result;
     }
 }

@@ -42,4 +42,8 @@ public class Logic extends AbstractExpression {
             throw new IllegalArgumentException("Operator is invalid");
         }
     }
+
+    public String toString() {
+        return left.toString() + " " + operator + " " + right.toString();
+    }
 }

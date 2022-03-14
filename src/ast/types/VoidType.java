@@ -19,10 +19,15 @@ public class VoidType extends AbstractType{
      * Return the instance of VoidType or create if it's null
      * @return voidType
      */
-    public static VoidType getCharType(){
+    public static VoidType getVoidType(){
         if (voidType == null){
             voidType = new VoidType();
         }
         return voidType;
+    }
+
+    @Override
+    public String toString() {
+        return "";
     }
 }

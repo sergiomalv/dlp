@@ -1,7 +1,9 @@
 package ast.definitions;
 
+import ast.expressions.Variable;
 import ast.statements.AbstractStatement;
 import ast.statements.Statement;
+import ast.types.FunctionType;
 import ast.types.Type;
 
 import java.util.List;
@@ -14,6 +16,7 @@ public class FuncDefinition extends AbstractDefinition {
 
     // Variables of the class
     private List<Statement> statements; // Statements of the function
+    private List<VarDefinition> variables;   // Variables of the function
 
     /**
      * Constructor of a function definition
@@ -21,10 +24,12 @@ public class FuncDefinition extends AbstractDefinition {
      * @param column
      * @param statements, list of statements
      */
-    public FuncDefinition(int line, int column, String name, Type type, List<Statement> statements) {
-        super(line, column, name, type);
+    public FuncDefinition(int line, int column, String name, Type type, List<VarDefinition> variables,
+                          List<Statement> statements) {
+        super(line, column, type, name);
         checkParams(statements);
         this.statements = statements;
+        this.variables = variables;
     }
 
     /**
@@ -35,10 +40,18 @@ public class FuncDefinition extends AbstractDefinition {
         if (statements == null){
             throw new IllegalArgumentException("The list of statements shouldn't be null");
         }
-        for (Statement statement : statements){
-            if (statement == null){
-                throw new IllegalArgumentException("Statement shouldn't be null");
-            }
+    }
+
+    @Override
+    public String toString() {
+        String result= "def " + this.getName() + "(): " + this.getType() + "{\n";
+        for (VarDefinition var : variables){
+            result += var.toString() +"\n";
         }
+        for (Statement st : statements){
+            result += st.toString() + "\n";
+        }
+
+        return result;
     }
 }

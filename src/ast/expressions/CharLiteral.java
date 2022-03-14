@@ -19,4 +19,9 @@ public class CharLiteral extends AbstractExpression {
         super(line, column);
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return value + "";
+    }
 }

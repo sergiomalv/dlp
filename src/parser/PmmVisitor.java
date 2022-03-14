@@ -30,11 +30,35 @@ public interface PmmVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTypes(PmmParser.TypesContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PmmParser#simpleTypes}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSimpleTypes(PmmParser.SimpleTypesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#fields}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFields(PmmParser.FieldsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#field}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitField(PmmParser.FieldContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PmmParser#createFunction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCreateFunction(PmmParser.CreateFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#functionMain}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionMain(PmmParser.FunctionMainContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PmmParser#createVar}.
 	 * @param ctx the parse tree
@@ -54,17 +78,17 @@ public interface PmmVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParametres(PmmParser.ParametresContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PmmParser#bodyFunction}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBodyFunction(PmmParser.BodyFunctionContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PmmParser#sentences}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSentences(PmmParser.SentencesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PmmParser#functionInvocation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionInvocation(PmmParser.FunctionInvocationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PmmParser#args}.
 	 * @param ctx the parse tree
@@ -83,12 +107,6 @@ public interface PmmVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitConditionBody(PmmParser.ConditionBodyContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PmmParser#functionMain}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionMain(PmmParser.FunctionMainContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PmmParser#expression}.
 	 * @param ctx the parse tree

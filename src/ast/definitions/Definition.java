@@ -10,12 +10,6 @@ import ast.types.Type;
 public interface Definition extends Type {
 
     /**
-     * Return the name of a definition
-     * @return name
-     */
-    public String getName();
-
-    /**
      * Return the type of definition
      * @return type
      */

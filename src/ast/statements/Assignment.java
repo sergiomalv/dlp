@@ -21,20 +21,14 @@ public class Assignment extends AbstractStatement{
      */
     public Assignment(int line, int column, Expression left, Expression right) {
         super(line, column);
-        checkParams(left, right);
         this.left = left;
         this.right = right;
     }
 
-    /**
-     * Check the expressions of the assigment
-     * @param expressions
-     */
-    private void checkParams(Expression... expressions){
-        for (Expression expression : expressions){
-            if (expression == null){
-                throw new IllegalArgumentException("Expression shouldn't be null");
-            }
-        }
+
+
+    @Override
+    public String toString() {
+        return left.toString() + "= " + right.toString();
     }
 }

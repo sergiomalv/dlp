@@ -35,4 +35,9 @@ public class ArrayAccess extends AbstractExpression{
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return this.left.toString() + "[" + this.right.toString() + "]";
+    }
 }

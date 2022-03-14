@@ -30,9 +30,6 @@ public class Print extends AbstractStatement{
      * @param expressions
      */
     private void checkParams(List<Expression> expressions){
-        if (expressions == null){
-            throw new IllegalArgumentException("The list of expressions shouldn't be null");
-        }
         if (expressions.isEmpty()){
             throw new IllegalArgumentException("There has to be at least an expression");
         }
@@ -42,5 +39,20 @@ public class Print extends AbstractStatement{
                 throw new IllegalArgumentException("Expression shouldn't be null");
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        String result = "print ";
+        int counter = 0;
+        for (Expression expression : this.expressions){
+           if (expressions.size() -1 == counter){
+               result += expression;
+           } else {
+               result += expression + ", ";
+           }
+           counter++;
+        }
+        return result;
     }
 }

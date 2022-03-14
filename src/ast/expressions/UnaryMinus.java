@@ -30,4 +30,9 @@ public class UnaryMinus extends AbstractExpression{
             throw new IllegalArgumentException("Expression shouldn't be null");
         }
     }
+
+    @Override
+    public String toString() {
+        return "-" + expression.toString();
+    }
 }

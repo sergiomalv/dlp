@@ -1,5 +1,9 @@
 package ast.types;
 
+import ast.definitions.VarDefinition;
+
+import java.util.List;
+
 /**
  * Represents a function type
  * @author Sergio
@@ -8,6 +12,7 @@ public class FunctionType extends AbstractType{
 
     // Variables of the class
     private Type type;  // Type of return
+    private List<VarDefinition> parameters; // Parametres of the function
 
     /**
      * Constructor of a function
@@ -15,19 +20,14 @@ public class FunctionType extends AbstractType{
      * @param column
      * @param type, type of return
      */
-    public FunctionType(int line, int column, Type type) {
+    public FunctionType(int line, int column, Type type, List<VarDefinition> parameters) {
         super(line, column);
-        checkParam(type);
         this.type = type;
+        this.parameters = parameters;
     }
 
-    /**
-     * Check the type of the constructor
-     * @param type, type of the field
-     */
-    private void checkParam(Type type){
-        if (type == null){
-            throw new IllegalArgumentException("Type shouldn't be null");
-        }
+    @Override
+    public String toString() {
+        return "(" + parameters.toString() + "): " + type;
     }
 }

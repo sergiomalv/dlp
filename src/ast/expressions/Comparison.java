@@ -41,4 +41,9 @@ public class Comparison extends AbstractExpression{
             throw new IllegalArgumentException("Operator shouldn't be null");
         }
     }
+
+    @Override
+    public String toString() {
+        return left.toString() + " " + operator + " " + right.toString();
+    }
 }
