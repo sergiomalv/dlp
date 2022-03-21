@@ -6,6 +6,7 @@ import ast.definitions.*;
 import ast.expressions.*;
 import ast.statements.*;
 import ast.types.*;
+import errorhandler.*;
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 

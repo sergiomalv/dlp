@@ -6,6 +6,7 @@ import ast.definitions.*;
 import ast.expressions.*;
 import ast.statements.*;
 import ast.types.*;
+import errorhandler.*;
 }
 
 program returns [Program ast] locals [List<Definition> aux = new ArrayList<Definition>();]:
@@ -30,10 +31,15 @@ simpleTypes returns [Type ast]
         ;
 
 fields returns [List<FieldType> ast = new ArrayList<FieldType>();]:
-        (f=field {$ast.add($f.ast);})+
+        (f=field {if ($ast.contains($f.ast)){
+            ErrorHandler.getErrorHandler().addError(new ErrorType($f.ast.getLine(),
+            $f.ast.getColumn()+1, $f.ast.name));
+        } else {
+            $ast.add($f.ast);
+        }})+
         ;
-field returns [FieldType ast]: v=vars ':' t=types ';' {$ast = new FieldType($v.start.getLine(),
-            $v.start.getCharPositionInLine()+1, $v.ast, $t.ast);}
+field returns [FieldType ast]: ID ':' t=types ';' {$ast = new FieldType($ID.getLine(),
+            $ID.getCharPositionInLine()+1, $ID.text, $t.ast);}
         ;
 
 createFunction returns [FuncDefinition ast] locals [List<VarDefinition> aux = new ArrayList<VarDefinition>(),
@@ -51,16 +57,21 @@ createFunction returns [FuncDefinition ast] locals [List<VarDefinition> aux = ne
 
 functionMain returns [FuncDefinition ast] locals [List<VarDefinition> aux = new ArrayList<VarDefinition>(),
         List<Statement> aux2 = new ArrayList<Statement>();]:
-        'def main(): {' (c=createVar {$aux.addAll($c.ast);})*
+        DEF='def main(): {' (c=createVar {$aux.addAll($c.ast);})*
         (s=sentences {$aux2.add($s.ast);})* '}'
-        {$ast = new FuncDefinition($c.ast.get(0).getLine(), $c.start.getCharPositionInLine()+1, "main", new FunctionType(
-        $c.ast.get(0).getLine(), $c.start.getCharPositionInLine()+1, VoidType.getVoidType(), new ArrayList<VarDefinition>()),
+        {$ast = new FuncDefinition($DEF.getLine(), $DEF.getCharPositionInLine()+1, "main", new FunctionType(
+        $DEF.getLine(), $DEF.getCharPositionInLine()+1, VoidType.getVoidType(), new ArrayList<VarDefinition>()),
         $aux, $aux2);}
         ;
 
 createVar returns [List<VarDefinition> ast = new ArrayList<VarDefinition>();]
         locals [List<String> aux = new ArrayList<String>();]:
-        id1=ID {$aux.add($id1.text);}   (',' id2=ID {$aux.add($id2.text);})*':' t=types ';'
+        id1=ID {$aux.add($id1.text);}   (',' id2=ID {if ($aux.contains($id2.text)) {
+            ErrorHandler.getErrorHandler().addError(new ErrorType($id2.getLine(),
+            $id2.getCharPositionInLine()+1, $id2.text));
+            } else {
+                $aux.add($id2.text);
+            }})*':' t=types ';'
         { for (String v : $aux) {
                 $ast.add(new VarDefinition($id1.getLine(), $id1.getCharPositionInLine()+1, $t.ast, v));
             }

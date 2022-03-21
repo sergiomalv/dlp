@@ -63,14 +63,14 @@ date:struct {
 };
 
 # Main program
-#def no_main(): { # Uncomment to test
+# def no_main(): { # Uncomment to test
 def main(): { # Uncomment to test
 	characters:[1][2][3]char;
 	MATRIXSIZE = 10;
 	fill(1);
 	setValue(5,5,5);
 	integer = getValue(5,5);
-	if integer == 5:  # Uncomment { to test
+	if integer == 5: { # Uncomment { to test
 		print 'O','k','\n';
 	}
 	else {

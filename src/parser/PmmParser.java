@@ -6,6 +6,7 @@ import ast.definitions.*;
 import ast.expressions.*;
 import ast.statements.*;
 import ast.types.*;
+import errorhandler.*;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -408,7 +409,12 @@ public class PmmParser extends Parser {
 					{
 					setState(79);
 					((FieldsContext)_localctx).f = field();
-					_localctx.ast.add(((FieldsContext)_localctx).f.ast);
+					if (_localctx.ast.contains(((FieldsContext)_localctx).f.ast)){
+					            ErrorHandler.getErrorHandler().addError(new ErrorType(((FieldsContext)_localctx).f.ast.getLine(),
+					            ((FieldsContext)_localctx).f.ast.getColumn()+1, ((FieldsContext)_localctx).f.ast.name));
+					        } else {
+					            _localctx.ast.add(((FieldsContext)_localctx).f.ast);
+					        }
 					}
 					}
 					break;
@@ -434,11 +440,9 @@ public class PmmParser extends Parser {
 
 	public static class FieldContext extends ParserRuleContext {
 		public FieldType ast;
-		public VarsContext v;
+		public Token ID;
 		public TypesContext t;
-		public VarsContext vars() {
-			return getRuleContext(VarsContext.class,0);
-		}
+		public TerminalNode ID() { return getToken(PmmParser.ID, 0); }
 		public TypesContext types() {
 			return getRuleContext(TypesContext.class,0);
 		}
@@ -460,15 +464,15 @@ public class PmmParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(86);
-			((FieldContext)_localctx).v = vars();
+			((FieldContext)_localctx).ID = match(ID);
 			setState(87);
 			match(T__8);
 			setState(88);
 			((FieldContext)_localctx).t = types();
 			setState(89);
 			match(T__9);
-			((FieldContext)_localctx).ast =  new FieldType((((FieldContext)_localctx).v!=null?(((FieldContext)_localctx).v.start):null).getLine(),
-			            (((FieldContext)_localctx).v!=null?(((FieldContext)_localctx).v.start):null).getCharPositionInLine()+1, ((FieldContext)_localctx).v.ast, ((FieldContext)_localctx).t.ast);
+			((FieldContext)_localctx).ast =  new FieldType(((FieldContext)_localctx).ID.getLine(),
+			            ((FieldContext)_localctx).ID.getCharPositionInLine()+1, (((FieldContext)_localctx).ID!=null?((FieldContext)_localctx).ID.getText():null), ((FieldContext)_localctx).t.ast);
 			}
 		}
 		catch (RecognitionException re) {
@@ -660,6 +664,7 @@ public class PmmParser extends Parser {
 		public FuncDefinition ast;
 		public List<VarDefinition> aux = new ArrayList<VarDefinition>();
 		public List<Statement> aux2 = new ArrayList<Statement>();;
+		public Token DEF;
 		public CreateVarContext c;
 		public SentencesContext s;
 		public List<CreateVarContext> createVar() {
@@ -694,7 +699,7 @@ public class PmmParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(147);
-			match(T__13);
+			((FunctionMainContext)_localctx).DEF = match(T__13);
 			setState(153);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
@@ -729,8 +734,8 @@ public class PmmParser extends Parser {
 			}
 			setState(164);
 			match(T__2);
-			((FunctionMainContext)_localctx).ast =  new FuncDefinition(((FunctionMainContext)_localctx).c.ast.get(0).getLine(), (((FunctionMainContext)_localctx).c!=null?(((FunctionMainContext)_localctx).c.start):null).getCharPositionInLine()+1, "main", new FunctionType(
-			        ((FunctionMainContext)_localctx).c.ast.get(0).getLine(), (((FunctionMainContext)_localctx).c!=null?(((FunctionMainContext)_localctx).c.start):null).getCharPositionInLine()+1, VoidType.getVoidType(), new ArrayList<VarDefinition>()),
+			((FunctionMainContext)_localctx).ast =  new FuncDefinition(((FunctionMainContext)_localctx).DEF.getLine(), ((FunctionMainContext)_localctx).DEF.getCharPositionInLine()+1, "main", new FunctionType(
+			        ((FunctionMainContext)_localctx).DEF.getLine(), ((FunctionMainContext)_localctx).DEF.getCharPositionInLine()+1, VoidType.getVoidType(), new ArrayList<VarDefinition>()),
 			        _localctx.aux, _localctx.aux2);
 			}
 		}
@@ -789,7 +794,12 @@ public class PmmParser extends Parser {
 				match(T__14);
 				setState(170);
 				((CreateVarContext)_localctx).id2 = match(ID);
-				_localctx.aux.add((((CreateVarContext)_localctx).id2!=null?((CreateVarContext)_localctx).id2.getText():null));
+				if (_localctx.aux.contains((((CreateVarContext)_localctx).id2!=null?((CreateVarContext)_localctx).id2.getText():null))) {
+				            ErrorHandler.getErrorHandler().addError(new ErrorType(((CreateVarContext)_localctx).id2.getLine(),
+				            ((CreateVarContext)_localctx).id2.getCharPositionInLine()+1, (((CreateVarContext)_localctx).id2!=null?((CreateVarContext)_localctx).id2.getText():null)));
+				            } else {
+				                _localctx.aux.add((((CreateVarContext)_localctx).id2!=null?((CreateVarContext)_localctx).id2.getText():null));
+				            }
 				}
 				}
 				setState(176);
@@ -1812,14 +1822,14 @@ public class PmmParser extends Parser {
 		"\2\2\2GA\3\2\2\2H\5\3\2\2\2IJ\7\b\2\2JP\b\4\1\2KL\7\t\2\2LP\b\4\1\2MN"+
 		"\7\n\2\2NP\b\4\1\2OI\3\2\2\2OK\3\2\2\2OM\3\2\2\2P\7\3\2\2\2QR\5\n\6\2"+
 		"RS\b\5\1\2SU\3\2\2\2TQ\3\2\2\2UV\3\2\2\2VT\3\2\2\2VW\3\2\2\2W\t\3\2\2"+
-		"\2XY\5\22\n\2YZ\7\13\2\2Z[\5\4\3\2[\\\7\f\2\2\\]\b\6\1\2]\13\3\2\2\2^"+
-		"_\7\r\2\2_`\7)\2\2`a\7\16\2\2ab\5\24\13\2bc\7\17\2\2cd\7\13\2\2de\5\6"+
-		"\4\2ek\7\4\2\2fg\5\20\t\2gh\b\7\1\2hj\3\2\2\2if\3\2\2\2jm\3\2\2\2ki\3"+
-		"\2\2\2kl\3\2\2\2ls\3\2\2\2mk\3\2\2\2no\5\26\f\2op\b\7\1\2pr\3\2\2\2qn"+
-		"\3\2\2\2ru\3\2\2\2sq\3\2\2\2st\3\2\2\2tv\3\2\2\2us\3\2\2\2vw\7\5\2\2w"+
-		"x\b\7\1\2x\u0094\3\2\2\2yz\7\r\2\2z{\7)\2\2{|\7\16\2\2|}\5\24\13\2}~\7"+
-		"\17\2\2~\177\7\13\2\2\177\u0085\7\4\2\2\u0080\u0081\5\20\t\2\u0081\u0082"+
-		"\b\7\1\2\u0082\u0084\3\2\2\2\u0083\u0080\3\2\2\2\u0084\u0087\3\2\2\2\u0085"+
+		"\2XY\7)\2\2YZ\7\13\2\2Z[\5\4\3\2[\\\7\f\2\2\\]\b\6\1\2]\13\3\2\2\2^_\7"+
+		"\r\2\2_`\7)\2\2`a\7\16\2\2ab\5\24\13\2bc\7\17\2\2cd\7\13\2\2de\5\6\4\2"+
+		"ek\7\4\2\2fg\5\20\t\2gh\b\7\1\2hj\3\2\2\2if\3\2\2\2jm\3\2\2\2ki\3\2\2"+
+		"\2kl\3\2\2\2ls\3\2\2\2mk\3\2\2\2no\5\26\f\2op\b\7\1\2pr\3\2\2\2qn\3\2"+
+		"\2\2ru\3\2\2\2sq\3\2\2\2st\3\2\2\2tv\3\2\2\2us\3\2\2\2vw\7\5\2\2wx\b\7"+
+		"\1\2x\u0094\3\2\2\2yz\7\r\2\2z{\7)\2\2{|\7\16\2\2|}\5\24\13\2}~\7\17\2"+
+		"\2~\177\7\13\2\2\177\u0085\7\4\2\2\u0080\u0081\5\20\t\2\u0081\u0082\b"+
+		"\7\1\2\u0082\u0084\3\2\2\2\u0083\u0080\3\2\2\2\u0084\u0087\3\2\2\2\u0085"+
 		"\u0083\3\2\2\2\u0085\u0086\3\2\2\2\u0086\u008d\3\2\2\2\u0087\u0085\3\2"+
 		"\2\2\u0088\u0089\5\26\f\2\u0089\u008a\b\7\1\2\u008a\u008c\3\2\2\2\u008b"+
 		"\u0088\3\2\2\2\u008c\u008f\3\2\2\2\u008d\u008b\3\2\2\2\u008d\u008e\3\2"+

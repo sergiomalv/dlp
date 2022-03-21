@@ -7,8 +7,8 @@ package ast.types;
 public abstract class AbstractType implements Type{
 
     // Class's variables
-    private int line;   // Shows information about the line
-    private int column; // Shows information about the column
+    int line;   // Shows information about the line
+    int column; // Shows information about the column
 
     /**
      * Constructor of the class

@@ -19,6 +19,7 @@ public class ErrorType extends AbstractType{
 
     @Override
     public String toString() {
-        return this.message;
+        return "There is an error in line: " + this.line + " ,column: " + column +
+                " at declaration " + message;
     }
 }
