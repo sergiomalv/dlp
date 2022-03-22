@@ -30,11 +30,7 @@ public class StructType extends AbstractType {
         if (fields == null){
             throw new IllegalArgumentException("The list of fields shouldn't be null");
         }
-        for (FieldType field : fields){
-            if (field == null){
-                throw new IllegalArgumentException("Field shouldn't be null");
-            }
-        }
+
     }
 
     @Override
