@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.statements.Statement;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -25,6 +26,11 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
         checkParams(var, expressions);
         this.var = var;
         this.expressions = expressions;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
     }
 
     /**
@@ -58,5 +64,9 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
             counter++;
         }
         return result;
+    }
+
+    public List<Expression> getExpressions() {
+        return expressions;
     }
 }

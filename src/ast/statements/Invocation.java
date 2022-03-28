@@ -3,6 +3,7 @@ package ast.statements;
 import ast.definitions.VarDefinition;
 import ast.expressions.Expression;
 import ast.expressions.Variable;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -30,6 +31,11 @@ public class Invocation extends AbstractStatement{
         this.expressions = expressions;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
     /**
      * Checks the identifier of the constructor
      * @param var
@@ -53,5 +59,9 @@ public class Invocation extends AbstractStatement{
             counter++;
         }
         return result;
+    }
+
+    public List<VarDefinition> getExpressions() {
+        return expressions;
     }
 }

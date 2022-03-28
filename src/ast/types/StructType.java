@@ -1,5 +1,7 @@
 package ast.types;
 
+import visitor.Visitor;
+
 import java.util.List;
 
 /**
@@ -22,6 +24,11 @@ public class StructType extends AbstractType {
         this.fields = fields;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
     /**
      * Checks the fields of the constructor
      * @param fields
@@ -36,5 +43,9 @@ public class StructType extends AbstractType {
     @Override
     public String toString() {
         return "struct {\n" + fields.toString() + "\n}";
+    }
+
+    public List<FieldType> getFields() {
+        return fields;
     }
 }

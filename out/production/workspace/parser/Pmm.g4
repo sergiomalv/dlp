@@ -12,7 +12,7 @@ import errorhandler.*;
 program returns [Program ast] locals [List<Definition> aux = new ArrayList<Definition>();]:
         (cv=createVar {$aux.addAll($cv.ast);} | cf=createFunction {$aux.add($cf.ast);})*
         fm=functionMain {$aux.add($fm.ast);} EOF
-        {$ast = new Program($cv.ast.get(0).getLine(), $cv.ast.get(0).getColumn(), $aux);}
+        {$ast = new Program($aux.get(0).getLine(), $aux.get(0).getColumn(), $aux);}
         ;
 
 types returns [Type ast] locals [List<FieldType> aux = new ArrayList<FieldType>();]
@@ -57,7 +57,7 @@ createFunction returns [FuncDefinition ast] locals [List<VarDefinition> aux = ne
 
 functionMain returns [FuncDefinition ast] locals [List<VarDefinition> aux = new ArrayList<VarDefinition>(),
         List<Statement> aux2 = new ArrayList<Statement>();]:
-        DEF='def main(): {' (c=createVar {$aux.addAll($c.ast);})*
+        DEF='def main():' '{' (c=createVar {$aux.addAll($c.ast);})*
         (s=sentences {$aux2.add($s.ast);})* '}'
         {$ast = new FuncDefinition($DEF.getLine(), $DEF.getCharPositionInLine()+1, "main", new FunctionType(
         $DEF.getLine(), $DEF.getCharPositionInLine()+1, VoidType.getVoidType(), new ArrayList<VarDefinition>()),

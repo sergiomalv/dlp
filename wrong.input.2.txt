@@ -1,10 +1,6 @@
-tuple: struct { 
-	key:int;	
-	value:int;	
-	key:double; # Error: duplicated field
-};
+# Lvalue required
 
-# Main program
-def main(): {
-	tuple.key = 0;
+def main():{
+	i:int;	
+	input i+2;
 }

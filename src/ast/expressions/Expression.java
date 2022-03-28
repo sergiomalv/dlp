@@ -7,4 +7,8 @@ import ast.AstNode;
  * @autor Sergio
  */
 public interface Expression extends AstNode {
+
+    boolean getLValue();
+
+    void setLValue(Boolean lValue);
 }

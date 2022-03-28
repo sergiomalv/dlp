@@ -1,12 +1,13 @@
 package ast.definitions;
 
 import ast.types.Type;
+import visitor.Visitor;
 
 /**
  * Abstract class that represents a definition
  * @author Sergio
  */
-public class AbstractDefinition implements Definition {
+public abstract class AbstractDefinition implements Definition {
 
     // Variables of the class
     private int line;   // Shows information about the line

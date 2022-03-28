@@ -9,6 +9,7 @@ public abstract class AbstractExpression implements Expression{
     // Class's variables
     private int line;   // Shows information about the line
     private int column; // Shows information about the column
+    boolean lValue;  // Shows if an expression can be on the left side of an assignment
 
     /**
      * Constructor of the class
@@ -35,6 +36,16 @@ public abstract class AbstractExpression implements Expression{
     @Override
     public int getColumn() {
         return this.column;
+    }
+
+    @Override
+    public boolean getLValue() {
+        return this.lValue;
+    }
+
+    @Override
+    public void setLValue(Boolean lValue) {
+        this.lValue = lValue;
     }
 
     /**

@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 /**
  * Represents a logic expression
  * @author Sergio
@@ -43,7 +45,20 @@ public class Logic extends AbstractExpression {
         }
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
     public String toString() {
         return left.toString() + " " + operator + " " + right.toString();
+    }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public Expression getRight() {
+        return right;
     }
 }

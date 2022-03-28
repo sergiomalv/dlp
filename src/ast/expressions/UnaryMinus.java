@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 /**
  * Represents an unary minus expression (-"expr")
  * @author Sergio
@@ -21,6 +23,11 @@ public class UnaryMinus extends AbstractExpression{
         this.expression = expression;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
     /**
      * Check the expression of the constructor
      * @param expression
@@ -34,5 +41,9 @@ public class UnaryMinus extends AbstractExpression{
     @Override
     public String toString() {
         return "-" + expression.toString();
+    }
+
+    public Expression getExpression() {
+        return expression;
     }
 }

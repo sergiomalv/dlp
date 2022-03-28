@@ -1,5 +1,7 @@
 package ast.types;
 
+import visitor.Visitor;
+
 /**
  * Represents an instance of VoidType
  * Singleton patron
@@ -24,6 +26,11 @@ public class VoidType extends AbstractType{
             voidType = new VoidType();
         }
         return voidType;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
     }
 
     @Override

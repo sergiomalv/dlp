@@ -1,5 +1,8 @@
 package ast.types;
 
+import errorhandler.ErrorHandler;
+import visitor.Visitor;
+
 public class ErrorType extends AbstractType{
 
     // Variables of the class
@@ -15,6 +18,12 @@ public class ErrorType extends AbstractType{
     public ErrorType(int line, int column, String message) {
         super(line, column);
         this.message = message;
+        ErrorHandler.getErrorHandler().addError(this);
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
     }
 
     @Override

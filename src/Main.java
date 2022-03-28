@@ -7,6 +7,7 @@ import ast.Program;
 import errorhandler.ErrorHandler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
+import semantic.TypeCheckingVisitor;
 
 public class Main {
 	

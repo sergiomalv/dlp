@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 /**
  * Represents an integer expression
  * @author Sergio
@@ -18,6 +20,11 @@ public class IntLiteral extends AbstractExpression{
     public IntLiteral(int line, int column, int value) {
         super(line, column);
         this.value = value;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
     }
 
     @Override

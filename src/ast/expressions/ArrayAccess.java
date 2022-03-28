@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 /**
  * Represents one access to an array
  * @author Sergio
@@ -24,6 +26,11 @@ public class ArrayAccess extends AbstractExpression{
         this.right = right;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
     /**
      * Check the expressions of the constructor
      * @param expressions
@@ -39,5 +46,13 @@ public class ArrayAccess extends AbstractExpression{
     @Override
     public String toString() {
         return this.left.toString() + "[" + this.right.toString() + "]";
+    }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public Expression getRight() {
+        return right;
     }
 }

@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,5 +55,18 @@ public class Arithmetic extends AbstractExpression{
     @Override
     public String toString() {
         return this.left + " " + this.operator + " " + this.right;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public Expression getRight() {
+        return right;
     }
 }

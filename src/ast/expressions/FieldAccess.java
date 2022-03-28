@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 /**
  * Represents one access to a field
  * @author Sergio
@@ -24,6 +26,11 @@ public class FieldAccess extends AbstractExpression{
         this.fieldName = fieldName;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
     /**
      * Check the params of the constructor
      * @param expression
@@ -41,5 +48,9 @@ public class FieldAccess extends AbstractExpression{
     @Override
     public String toString() {
         return expression.toString() + "." + fieldName;
+    }
+
+    public Expression getExpression() {
+        return expression;
     }
 }

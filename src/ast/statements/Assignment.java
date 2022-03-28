@@ -1,6 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 /**
  * Represents a assignment statement
@@ -25,10 +26,21 @@ public class Assignment extends AbstractStatement{
         this.right = right;
     }
 
-
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
 
     @Override
     public String toString() {
         return left.toString() + "= " + right.toString();
+    }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public Expression getRight() {
+        return right;
     }
 }

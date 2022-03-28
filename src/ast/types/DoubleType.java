@@ -1,5 +1,7 @@
 package ast.types;
 
+import visitor.Visitor;
+
 /**
  * Represents an instance of DoubleType
  * Singleton patron
@@ -24,6 +26,11 @@ public class DoubleType extends AbstractType{
             doubleType = new DoubleType();
         }
         return doubleType;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
     }
 
     @Override

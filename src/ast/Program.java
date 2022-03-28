@@ -2,6 +2,7 @@ package ast;
 
 import ast.definitions.Definition;
 import ast.statements.Statement;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -45,6 +46,11 @@ public class Program implements AstNode{
         return 0;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
     /**
      * Check the params of the constructor
      * @param line
@@ -61,11 +67,7 @@ public class Program implements AstNode{
         if (definitions == null){
             throw new IllegalArgumentException("The list of definitions shouldn't be null");
         }
-        for (Definition definition : definitions){
-            if (definition == null){
-                throw new IllegalArgumentException("Definition shouldn't be null");
-            }
-        }
+
     }
 
     @Override
@@ -75,5 +77,9 @@ public class Program implements AstNode{
             result += def.toString() + "\n";
         }
         return result;
+    }
+
+    public List<Definition> getDefinitions() {
+        return definitions;
     }
 }

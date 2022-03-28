@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 /**
  * Represents not expression
  * @author Sergio
@@ -31,7 +33,16 @@ public class Not extends AbstractExpression{
     }
 
     @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
+    @Override
     public String toString() {
         return "!" + expression.toString();
+    }
+
+    public Expression getExpression() {
+        return expression;
     }
 }

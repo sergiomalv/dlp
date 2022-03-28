@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 /**
  * Represents a double expression
  * @author Sergio
@@ -17,6 +19,11 @@ public class DoubleLiteral extends AbstractExpression {
     public DoubleLiteral(int line, int column, double value) {
         super(line, column);
         this.value = value;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
     }
 
     @Override

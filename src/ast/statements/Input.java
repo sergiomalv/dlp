@@ -1,6 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -23,6 +24,11 @@ public class Input extends AbstractStatement {
         super(line, column);
         checkParams(expressions);
         this.expressions = expressions;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
     }
 
     /**
@@ -55,5 +61,9 @@ public class Input extends AbstractStatement {
             }
         }
         return result;
+    }
+
+    public List<Expression> getExpressions() {
+        return expressions;
     }
 }

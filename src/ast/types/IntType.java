@@ -1,5 +1,7 @@
 package ast.types;
 
+import visitor.Visitor;
+
 /**
  * Represents an instance of IntType
  * Singleton patron
@@ -24,6 +26,11 @@ public class IntType extends AbstractType{
             intType = new IntType();
         }
         return intType;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
     }
 
     @Override

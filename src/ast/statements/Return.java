@@ -1,6 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 /**
  * Represents a return statement
@@ -23,6 +24,11 @@ public class Return extends AbstractStatement{
         this.expression = expression;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
     /**
      * Check the expression of the constructor
      * @param expression
@@ -36,5 +42,9 @@ public class Return extends AbstractStatement{
     @Override
     public String toString() {
         return "return " + expression.toString() + ";";
+    }
+
+    public Expression getExpression() {
+        return expression;
     }
 }

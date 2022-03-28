@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.expressions.Expression;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -28,6 +29,11 @@ public class ArrayType extends AbstractType{
         this.type = type;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
     /**
      * Check the params of the constructor
      * @param type, shouldn't be null
@@ -41,5 +47,9 @@ public class ArrayType extends AbstractType{
     @Override
     public String toString() {
         return "[" + dimension + "]" + type.toString();
+    }
+
+    public Type getType() {
+        return type;
     }
 }

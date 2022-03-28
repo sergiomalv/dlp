@@ -5,6 +5,7 @@ import ast.statements.AbstractStatement;
 import ast.statements.Statement;
 import ast.types.FunctionType;
 import ast.types.Type;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -32,6 +33,11 @@ public class FuncDefinition extends AbstractDefinition {
         this.variables = variables;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
     /**
      * Check the statements of the constructor
      * @param statements
@@ -53,5 +59,13 @@ public class FuncDefinition extends AbstractDefinition {
         }
 
         return result;
+    }
+
+    public List<Statement> getStatements() {
+        return statements;
+    }
+
+    public List<VarDefinition> getVariables() {
+        return variables;
     }
 }

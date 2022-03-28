@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 /**
  * Represents a comparison of 2 expressions
  */
@@ -26,6 +28,11 @@ public class Comparison extends AbstractExpression{
         this.operator = operator;
     }
 
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
+    }
+
     /**
      * Check the expressions of the constructor
      * @param left, left expression
@@ -45,5 +52,13 @@ public class Comparison extends AbstractExpression{
     @Override
     public String toString() {
         return left.toString() + " " + operator + " " + right.toString();
+    }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public Expression getRight() {
+        return right;
     }
 }

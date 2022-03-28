@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 /**
  * Represents a variable
  * @author Sergio
@@ -19,6 +21,11 @@ public class Variable extends AbstractExpression {
         super(line, column);
         checkParams(name);
         this.name = name;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
     }
 
     /**

@@ -1,5 +1,7 @@
 package ast.types;
 
+import visitor.Visitor;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -25,6 +27,11 @@ public class FieldType extends AbstractType{
         //checkParams(name, type);
         this.name = name;
         this.type = type;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
+        return v.visit(this, tp);
     }
 
     /**
@@ -62,5 +69,9 @@ public class FieldType extends AbstractType{
     @Override
     public int hashCode() {
         return Objects.hash(name, type);
+    }
+
+    public Type getType() {
+        return type;
     }
 }
