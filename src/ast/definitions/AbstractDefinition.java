@@ -14,6 +14,7 @@ public abstract class AbstractDefinition implements Definition {
     private int column; // Shows information about the column
     private Type type;  // Show the type of definition
     private String name;    //Name of the definition
+    private int scope;
 
     public AbstractDefinition(int line, int column, Type type, String name){
         checkParams(line, column);
@@ -41,10 +42,21 @@ public abstract class AbstractDefinition implements Definition {
     @Override
     public Type getType() { return this.type; }
 
+    @Override
     /**
      * @return name
      */
     public String getName() { return this.name; }
+
+    @Override
+    public int getScope(){
+        return this.scope;
+    }
+
+    @Override
+    public void setScope(int scope){
+        this.scope = scope;
+    }
 
     /**
      * Check the params of the constructor

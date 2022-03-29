@@ -12,7 +12,7 @@ import java.util.List;
 public class FunctionInvocation extends AbstractExpression implements Statement {
 
     // Variables of the class
-    private String var;   // Variable of the invocation
+    private Variable var;   // Variable of the invocation
     private List<Expression> expressions;   // Args of the function
 
     /**
@@ -21,7 +21,7 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
      * @param column
      * @param var
      */
-    public FunctionInvocation(int line, int column, String var, List<Expression> expressions) {
+    public FunctionInvocation(int line, int column, Variable var, List<Expression> expressions) {
         super(line, column);
         checkParams(var, expressions);
         this.var = var;
@@ -37,8 +37,8 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
      * Check the variable of the constructor
      * @param var
      */
-    private void checkParams(String var, List<Expression> expressions){
-        if (var == null || var.trim().isEmpty()){
+    private void checkParams(Variable var, List<Expression> expressions){
+        if (var == null){
             throw new IllegalArgumentException("Var shouldn't be null or empty");
         }
         if (expressions == null){

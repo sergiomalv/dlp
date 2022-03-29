@@ -4,10 +4,10 @@ import parser.*;
 import org.antlr.v4.runtime.*;
 
 import ast.Program;
-import errorhandler.ErrorHandler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import semantic.TypeCheckingVisitor;
+import visitor.Visitor;
 
 public class Main {
 	
@@ -25,16 +25,19 @@ public class Main {
 		CommonTokenStream tokens = new CommonTokenStream(lexer); 
 		PmmParser parser = new PmmParser(tokens);	
 		Program ast = parser.program().ast;
-		
-		// * Check errors 
-		if(ErrorHandler.getErrorHandler().hasErrors()){
+
+		//ast.accept(new IdentificationVisitor(), null);
+		ast.accept(new TypeCheckingVisitor(),null);
+
+		// * Check errors
+		if(ErrorHandler.getErrorHandler().anyError()){
 			// * Show errors
 			ErrorHandler.getErrorHandler().showErrors(System.err);
 		}
-		else{			
+		else{
 			// * The AST is shown
 			IntrospectorModel model=new IntrospectorModel("Program", ast);
 			new IntrospectorTree("Introspector", model);
-		}		
+		}
 	}
 }

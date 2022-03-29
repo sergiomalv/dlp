@@ -1177,7 +1177,7 @@ public class PmmParser extends Parser {
 				setState(275);
 				match(T__9);
 				 ((SentencesContext)_localctx).ast =  new FunctionInvocation(((SentencesContext)_localctx).ID.getLine(), ((SentencesContext)_localctx).ID.getCharPositionInLine() + 1,
-				        (((SentencesContext)_localctx).ID!=null?((SentencesContext)_localctx).ID.getText():null), parameters);
+				        new Variable(((SentencesContext)_localctx).ID.getLine(), ((SentencesContext)_localctx).ID.getCharPositionInLine() + 1, (((SentencesContext)_localctx).ID!=null?((SentencesContext)_localctx).ID.getText():null)), parameters);
 				}
 				break;
 			}
@@ -1554,7 +1554,8 @@ public class PmmParser extends Parser {
 				setState(342);
 				match(T__12);
 				((ExpressionContext)_localctx).ast =  new FunctionInvocation((((ExpressionContext)_localctx).fi!=null?(((ExpressionContext)_localctx).fi.start):null).getLine(),
-				                  (((ExpressionContext)_localctx).fi!=null?(((ExpressionContext)_localctx).fi.start):null).getCharPositionInLine()+1, (((ExpressionContext)_localctx).ID!=null?((ExpressionContext)_localctx).ID.getText():null), ((ExpressionContext)_localctx).fi.ast);
+				                  (((ExpressionContext)_localctx).fi!=null?(((ExpressionContext)_localctx).fi.start):null).getCharPositionInLine()+1, new Variable(
+				                  (((ExpressionContext)_localctx).fi!=null?(((ExpressionContext)_localctx).fi.start):null).getLine(), (((ExpressionContext)_localctx).fi!=null?(((ExpressionContext)_localctx).fi.start):null).getCharPositionInLine()+1, (((ExpressionContext)_localctx).ID!=null?((ExpressionContext)_localctx).ID.getText():null)), ((ExpressionContext)_localctx).fi.ast);
 				}
 				break;
 			case 6:

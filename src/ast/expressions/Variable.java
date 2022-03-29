@@ -1,5 +1,6 @@
 package ast.expressions;
 
+import ast.definitions.Definition;
 import visitor.Visitor;
 
 /**
@@ -10,6 +11,7 @@ public class Variable extends AbstractExpression {
 
     // Variables of the class
     private String name;
+    private Definition definition;
 
     /**
      * Constructor of a variable
@@ -41,5 +43,9 @@ public class Variable extends AbstractExpression {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    public Definition getDefinition() {
+        return definition;
     }
 }

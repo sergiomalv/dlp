@@ -14,4 +14,22 @@ public interface Definition extends Type {
      * @return type
      */
     public Type getType();
+
+    /**
+     * Return the actual scope of definition
+     * @return scope
+     */
+    public int getScope();
+
+    /**
+     * Set the scope of definition
+     * @param scope
+     */
+    public void setScope (int scope);
+
+    /**
+     * Return the name of the definition
+     * @return
+     */
+    public String getName();
 }
