@@ -69,4 +69,8 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
     public List<Expression> getExpressions() {
         return expressions;
     }
+
+    public Variable getVar() {
+        return var;
+    }
 }

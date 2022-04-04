@@ -48,4 +48,12 @@ public class Variable extends AbstractExpression {
     public Definition getDefinition() {
         return definition;
     }
+
+    public void setDefinition(Definition definition){
+        this.definition = definition;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

@@ -26,6 +26,7 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(FuncDefinition f, TP tp) {
+        f.getType().accept(this, tp);
         f.getVariables().forEach(varDefinition -> varDefinition.accept(this, tp));
         f.getStatements().forEach(statement -> statement.accept(this, tp));
         return null;
@@ -77,6 +78,7 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(FunctionInvocation f, TP tp) {
+        f.getVar().accept(this, tp);
         f.getExpressions().forEach(expression -> expression.accept(this, tp));
         return null;
     }
