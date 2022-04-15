@@ -1,5 +1,6 @@
 package ast.types;
 
+import ast.AstNode;
 import visitor.Visitor;
 
 import java.util.List;
@@ -27,6 +28,16 @@ public class StructType extends AbstractType {
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
         return v.visit(this, tp);
+    }
+
+    @Override
+    public Type dot(String name, AstNode node) {
+        for (FieldType field : fields){
+            if (field.getName().equals(name)){
+                return field.getType();
+            }
+        }
+        return super.dot(name, node);
     }
 
     /**

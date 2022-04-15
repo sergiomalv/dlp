@@ -98,7 +98,7 @@ sentences returns [Statement ast] locals [List<Expression> aux = new ArrayList<E
         | 'input' s=sentence ';' {$ast = new Input($s.ast.get(0).getLine(), $s.ast.get(0).getColumn(),
             $s.ast);}
         | 'if' expr=expression ':' c1=conditionBody ('else' c2=conditionBody)? {$ast = new IfElse(
-            $expr.ast.getLine(), $expr.ast.getColumn(), $expr.ast, $c1.ast, $c2.ctx == null ? null : $c2.ast);}
+            $expr.ast.getLine(), $expr.ast.getColumn(), $expr.ast, $c1.ast, $c2.ctx == null ? new ArrayList<Statement>() : $c2.ast);}
         | 'while' expr=expression ':' c=conditionBody {$ast= new While($expr.ast.getLine(),
             $expr.ast.getColumn(), $expr.ast, $c.ast);}
         | 'return' expr=expression ';' {$ast = new Return($expr.ast.getLine(), $expr.ast.getColumn(),
@@ -114,7 +114,7 @@ functionInvocation returns [List<Expression> ast = new ArrayList<Expression>();]
         ;
 
 args returns [List<Expression> ast = new ArrayList<Expression>();]:
-        e=expression {$ast.add($e.ast);}(',' e1=expression {$ast.add($e1.ast);})*
+        (e=expression {$ast.add($e.ast);}(',' e1=expression {$ast.add($e1.ast);})*)?
         ;
 
 sentence returns [List<Expression> ast = new ArrayList<Expression>();]:

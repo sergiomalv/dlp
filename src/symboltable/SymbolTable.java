@@ -31,13 +31,14 @@ public class SymbolTable {
 		definition.setScope(scope);
 		return true;
 	}
-	
+
 	public Definition find(String id) {
-		for (Map<String, Definition> map : table){
-			if (map.containsKey(id)){
-				return  map.get(id);
+		for (int i = scope; i >= 0; i--){
+			if (table.get(i).containsKey(id)) {
+				return table.get(i).get(id);
 			}
 		}
+
 		return null;
 	}
 

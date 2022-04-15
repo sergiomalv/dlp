@@ -1,9 +1,7 @@
 package ast.types;
 
-import ast.expressions.Expression;
+import ast.AstNode;
 import visitor.Visitor;
-
-import java.util.List;
 
 /**
  * Represents an array, it must have a size > 0
@@ -13,7 +11,7 @@ public class ArrayType extends AbstractType{
 
     // Variables of the class
     private int dimension;   // Size of the array
-    private Type type;  // Type of the array
+    private Type of;  // Type of the array
 
     /**
      * Constructor of an array
@@ -26,7 +24,7 @@ public class ArrayType extends AbstractType{
         super(line, column);
         checkParams(type);
         this.dimension = dimension;
-        this.type = type;
+        this.of = type;
     }
 
     @Override
@@ -45,11 +43,19 @@ public class ArrayType extends AbstractType{
     }
 
     @Override
-    public String toString() {
-        return "[" + dimension + "]" + type.toString();
+    public Type squareBrackets(Type type, AstNode node) {
+        if (type.equals(IntType.getIntType()) || type instanceof ErrorType){
+            return this.of;
+        }
+        return super.squareBrackets(type, node);
     }
 
-    public Type getType() {
-        return type;
+    @Override
+    public String toString() {
+        return "[" + dimension + "]" + of.toString();
+    }
+
+    public Type getOf() {
+        return of;
     }
 }

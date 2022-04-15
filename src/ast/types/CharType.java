@@ -1,5 +1,6 @@
 package ast.types;
 
+import ast.AstNode;
 import visitor.Visitor;
 
 /**
@@ -26,6 +27,57 @@ public class CharType extends AbstractType{
             charType = new CharType();
         }
         return charType;
+    }
+
+    @Override
+    public Type arithmetic(Type type, AstNode node) {
+        if (type.equals(this)){
+            return IntType.getIntType();
+        }
+
+        if (type instanceof ErrorType){
+            return type;
+        }
+
+        return super.arithmetic(type, node);
+    }
+
+    @Override
+    public Type comparison(Type type, AstNode node) {
+        if (type.equals(this) || type instanceof ErrorType){
+            return IntType.getIntType();
+        }
+
+        return super.comparison(type, node);
+    }
+
+    @Override
+    public Type promotesTo(Type type, AstNode node) {
+        if (type.equals(this) || type instanceof ErrorType){
+            return type;
+        }
+
+        return super.promotesTo(type, node);
+    }
+
+    @Override
+    public boolean isBuiltin() {
+        return true;
+    }
+
+    @Override
+    public Type canBeCasted(Type type, AstNode node) {
+        if (type.equals(this) || type.equals(IntType.getIntType()) ||
+                type.equals(DoubleType.getDoubleType())){
+            return this;
+        }
+
+        return super.canBeCasted(type, node);
+    }
+
+    @Override
+    public Type arithmetic(AstNode node) {
+        return this;
     }
 
     @Override

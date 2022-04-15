@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.statements.Statement;
+import ast.types.Type;
 import visitor.Visitor;
 
 import java.util.List;
@@ -43,11 +44,6 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
         }
         if (expressions == null){
             throw new IllegalArgumentException("List of expressions shouldn't be null");
-        }
-        for (Expression expression : expressions){
-            if (expression == null){
-                throw new IllegalArgumentException("Expression shouldn't be null");
-            }
         }
     }
 

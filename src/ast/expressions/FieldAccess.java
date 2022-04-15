@@ -53,4 +53,8 @@ public class FieldAccess extends AbstractExpression{
     public Expression getExpression() {
         return expression;
     }
+
+    public String getFieldName() {
+        return fieldName;
+    }
 }

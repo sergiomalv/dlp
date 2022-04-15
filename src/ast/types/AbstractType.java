@@ -1,5 +1,10 @@
 package ast.types;
 
+import ast.AstNode;
+import ast.expressions.Expression;
+
+import java.util.List;
+
 /**
  * Abstract class that represents a type
  * @author Sergio
@@ -35,6 +40,66 @@ public abstract class AbstractType implements Type{
     @Override
     public int getColumn() {
         return this.column;
+    }
+
+    @Override
+    public boolean isLogical(){
+        return false;
+    }
+
+    @Override
+    public Type arithmetic(Type type, AstNode node){
+        return new ErrorType(node.getLine(), node.getColumn(), "Can't do a operation between left and right");
+    }
+
+    @Override
+    public Type arithmetic(AstNode node){
+        return new ErrorType(node.getLine(), node.getColumn(), "Can't do a operation between left and right");
+    }
+
+    @Override
+    public Type comparison(Type type, AstNode node) {
+        return new ErrorType(node.getLine(), node.getColumn(), "Can't compare this expression");
+    }
+
+    @Override
+    public Type logical(Type type, AstNode node) {
+        return new ErrorType(node.getLine(), node.getColumn(), "Can't do this logical operation");
+    }
+
+    @Override
+    public Type logical(AstNode node) {
+        return new ErrorType(node.getLine(), node.getColumn(), "Can't do this logical operation");
+    }
+
+    @Override
+    public Type promotesTo(Type type, AstNode node) {
+        return new ErrorType(node.getLine(), node.getColumn(), "Can't promote this");
+    }
+
+    @Override
+    public Type dot(String name, AstNode node) {
+        return new ErrorType(node.getLine(), node.getColumn(), "Can't access");
+    }
+
+    @Override
+    public Type squareBrackets(Type type, AstNode node) {
+        return new ErrorType(node.getLine(), node.getColumn(), "Can't access");
+    }
+
+    @Override
+    public boolean isBuiltin() {
+        return false;
+    }
+
+    @Override
+    public Type canBeCasted(Type type, AstNode node) {
+        return new ErrorType(node.getLine(), node.getColumn(), "Can't be casted");
+    }
+
+    @Override
+    public Type parenthesis(List<Expression> expressions, AstNode node) {
+        return new ErrorType(node.getLine(), node.getColumn(), "Can't analyze the parenthesis");
     }
 
     /**

@@ -160,7 +160,7 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     @Override
     public TR visit(ArrayType a, TP tp) {
-        a.getType().accept(this, tp);
+        a.getOf().accept(this, tp);
         return null;
     }
 

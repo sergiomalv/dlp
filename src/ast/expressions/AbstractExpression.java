@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import ast.types.Type;
+
 /**
  * Abstract class that represents an expression
  * @author Sergio
@@ -10,6 +12,7 @@ public abstract class AbstractExpression implements Expression{
     private int line;   // Shows information about the line
     private int column; // Shows information about the column
     boolean lValue;  // Shows if an expression can be on the left side of an assignment
+    Type type;      // Type of the expression
 
     /**
      * Constructor of the class
@@ -46,6 +49,16 @@ public abstract class AbstractExpression implements Expression{
     @Override
     public void setLValue(Boolean lValue) {
         this.lValue = lValue;
+    }
+
+    @Override
+    public Type getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(Type type) {
+        this.type = type;
     }
 
     /**

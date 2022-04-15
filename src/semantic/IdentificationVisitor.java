@@ -38,6 +38,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
     @Override
     public Void visit(Variable variable, Void unused){
         variable.setDefinition(symbolTable.find(variable.getName()));
+
         if (variable.getDefinition() == null){
             variable.setDefinition(new VarDefinition(variable.getLine(), variable.getColumn(),
                     new ErrorType(variable.getLine(), variable.getColumn(), variable.toString()),

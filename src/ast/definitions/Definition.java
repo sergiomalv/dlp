@@ -7,7 +7,7 @@ import ast.types.Type;
  * Represents a definition
  * @author Sergio
  */
-public interface Definition extends Type {
+public interface Definition extends AstNode {
 
     /**
      * Return the type of definition

@@ -1,6 +1,8 @@
 package ast.types;
 
+import ast.AstNode;
 import ast.definitions.VarDefinition;
+import ast.expressions.Expression;
 import visitor.Visitor;
 
 import java.util.List;
@@ -13,7 +15,7 @@ public class FunctionType extends AbstractType{
 
     // Variables of the class
     private Type type;  // Type of return
-    private List<VarDefinition> parameters; // Parametres of the function
+    private List<VarDefinition> parameters; // Parameters of the function
 
     /**
      * Constructor of a function
@@ -25,6 +27,21 @@ public class FunctionType extends AbstractType{
         super(line, column);
         this.type = type;
         this.parameters = parameters;
+    }
+
+    @Override
+    public Type parenthesis(List<Expression> expressions, AstNode node) {
+        if(parameters.size() != expressions.size()){
+            super.parenthesis(expressions, node);
+        }
+
+        for(int i = 0; i < expressions.size(); i++){
+            if(parameters.get(i).getType().promotesTo(expressions.get(i).getType(), node) instanceof
+                    ErrorType){
+                return null;
+            }
+        }
+        return this.type;
     }
 
     @Override

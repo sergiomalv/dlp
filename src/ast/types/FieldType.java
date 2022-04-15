@@ -1,5 +1,6 @@
 package ast.types;
 
+import ast.AstNode;
 import visitor.Visitor;
 
 import java.util.List;
@@ -73,5 +74,9 @@ public class FieldType extends AbstractType{
 
     public Type getType() {
         return type;
+    }
+
+    public String getName() {
+        return name;
     }
 }
