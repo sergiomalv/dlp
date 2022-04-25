@@ -13,6 +13,9 @@ import java.util.List;
  */
 public class VarDefinition extends AbstractDefinition implements Statement {
 
+    //Variables of the class
+    int offset;     // Actual offset of the field
+
     /**
      * Constructor of a definition of variables
      * @param line
@@ -26,6 +29,14 @@ public class VarDefinition extends AbstractDefinition implements Statement {
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
         return v.visit(this, tp);
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     @Override

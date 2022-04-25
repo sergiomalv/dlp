@@ -22,4 +22,5 @@ public interface Type extends AstNode {
     boolean isBuiltin();
     Type canBeCasted(Type type, AstNode node);
     Type parenthesis(List<Expression> expressions, AstNode node);
+    int numberOfBytes();
 }

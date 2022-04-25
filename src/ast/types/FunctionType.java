@@ -45,6 +45,16 @@ public class FunctionType extends AbstractType{
     }
 
     @Override
+    public int numberOfBytes() {
+        int total = 0;
+        for (VarDefinition parameter : parameters){
+            total += parameter.getType().numberOfBytes();
+        }
+        total += type.numberOfBytes();
+        return  total;
+    }
+
+    @Override
     public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
         return v.visit(this, tp);
     }

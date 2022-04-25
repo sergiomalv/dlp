@@ -102,6 +102,11 @@ public abstract class AbstractType implements Type{
         return new ErrorType(node.getLine(), node.getColumn(), "Can't analyze the parenthesis");
     }
 
+    @Override
+    public int numberOfBytes(){
+        throw new IllegalStateException();
+    }
+
     /**
      * Check the params of the constructor
      * @param line, at least 0

@@ -13,8 +13,9 @@ import java.util.Objects;
 public class FieldType extends AbstractType{
 
     // Variables of the class
-    public String name;    //Name that identifies a field
+    public String name;     // Name that identifies a field
     private Type type;            // Type of the field
+    private int offset;     // Actual offset of the field
 
     /**
      * Constructor of a field
@@ -65,6 +66,19 @@ public class FieldType extends AbstractType{
         if (o == null || getClass() != o.getClass()) return false;
         FieldType fieldType = (FieldType) o;
         return Objects.equals(name, fieldType.name);
+    }
+
+    @Override
+    public int numberOfBytes() {
+        return type.numberOfBytes();
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     @Override

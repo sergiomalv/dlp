@@ -1,3 +1,4 @@
+import codeGenerator.OffsetVisitor;
 import errorhandler.ErrorHandler;
 import parser.*;
 
@@ -29,6 +30,7 @@ public class Main {
 
 		ast.accept(new IdentificationVisitor(), null);
 		ast.accept(new TypeCheckingVisitor(),null);
+		ast.accept(new OffsetVisitor(), null);
 
 		// * Check errors
 		if(ErrorHandler.getErrorHandler().anyError()){

@@ -96,6 +96,11 @@ public class IntType extends AbstractType{
     }
 
     @Override
+    public int numberOfBytes() {
+        return 2;
+    }
+
+    @Override
     public <TP, TR> TR accept(Visitor<TP, TR> v, TP tp) {
         return v.visit(this, tp);
     }

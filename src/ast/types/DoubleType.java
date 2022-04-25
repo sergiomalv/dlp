@@ -82,6 +82,11 @@ public class DoubleType extends AbstractType{
     }
 
     @Override
+    public int numberOfBytes() {
+        return 4;
+    }
+
+    @Override
     public String toString() {
         return "double";
     }

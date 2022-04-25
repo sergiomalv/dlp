@@ -86,6 +86,11 @@ public class CharType extends AbstractType{
     }
 
     @Override
+    public int numberOfBytes() {
+        return 1;
+    }
+
+    @Override
     public String toString() {
         return "char";
     }
