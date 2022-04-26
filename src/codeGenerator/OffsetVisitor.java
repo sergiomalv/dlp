@@ -56,7 +56,6 @@ public class OffsetVisitor extends AbstractVisitor<Boolean, Void> {
         f.getType().accept(this, aBoolean);
         for (VarDefinition varDefinition : f.getVariables()){
             varDefinition.accept(this, false);
-            //beforeLocal += varDefinition.getType().numberOfBytes();
         }
         return null;
     }
