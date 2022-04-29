@@ -107,6 +107,11 @@ public abstract class AbstractType implements Type{
         throw new IllegalStateException();
     }
 
+    @Override
+    public char suffix() {
+        throw new IllegalStateException();
+    }
+
     /**
      * Check the params of the constructor
      * @param line, at least 0

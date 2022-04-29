@@ -23,4 +23,5 @@ public interface Type extends AstNode {
     Type canBeCasted(Type type, AstNode node);
     Type parenthesis(List<Expression> expressions, AstNode node);
     int numberOfBytes();
+    char suffix();
 }
