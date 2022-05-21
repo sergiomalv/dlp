@@ -69,4 +69,8 @@ public class Arithmetic extends AbstractExpression{
     public Expression getRight() {
         return right;
     }
+
+    public String getOperator() {
+        return operator;
+    }
 }

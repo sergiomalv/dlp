@@ -60,6 +60,15 @@ public class StructType extends AbstractType {
         return  total;
     }
 
+    public FieldType getField(String id){
+        for (int i = 0; i < fields.size(); i++){
+            if (fields.get(i).name.equals(id)){
+                return fields.get(i);
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "struct {\n" + fields.toString() + "\n}";

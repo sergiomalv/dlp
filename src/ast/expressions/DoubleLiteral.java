@@ -30,4 +30,8 @@ public class DoubleLiteral extends AbstractExpression {
     public String toString() {
         return this.value + "";
     }
+
+    public double getValue() {
+        return value;
+    }
 }

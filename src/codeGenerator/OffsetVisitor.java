@@ -53,10 +53,11 @@ public class OffsetVisitor extends AbstractVisitor<Boolean, Void> {
     @Override
     public Void visit(FuncDefinition f, Boolean aBoolean) {
         beforeLocal = 0;
-        f.getType().accept(this, aBoolean);
         for (VarDefinition varDefinition : f.getVariables()){
             varDefinition.accept(this, false);
         }
+        f.getType().accept(this, aBoolean);
+        f.setLocalVariablesBytes(-1 * beforeLocal);
         return null;
     }
 

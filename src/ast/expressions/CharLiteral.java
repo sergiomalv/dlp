@@ -31,4 +31,8 @@ public class CharLiteral extends AbstractExpression {
     public String toString() {
         return value + "";
     }
+
+    public char getValue() {
+        return value;
+    }
 }

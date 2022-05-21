@@ -1,5 +1,8 @@
 package ast;
 
+import ast.types.CharType;
+import ast.types.DoubleType;
+import ast.types.IntType;
 import ast.types.Type;
 
 import java.io.FileNotFoundException;
@@ -211,5 +214,53 @@ public class CodeGenerator {
     public void line(String constant){
         out.println("#line\t" + constant);
         out.flush();
+    }
+
+    public void arithmetic(String operator, Type type){
+        if (operator.equals("+")){
+            add(type);
+        } else if (operator.equals("-")){
+            sub(type);
+        } else if (operator.equals("*")){
+            mul(type);
+        } else if (operator.equals("/")){
+            div(type);
+        } else if (operator.equals("%")){
+            mod(type);
+        }
+    }
+
+    public void cast(Type from, Type to){
+        if (from instanceof IntType){
+            if (to instanceof DoubleType){
+                i2f();
+            } else if (to instanceof CharType){
+                i2b();
+            }
+        } else if (from instanceof DoubleType) {
+            if (to instanceof  IntType){
+                f2i();
+            }
+        } else if (from instanceof CharType){
+            if (to instanceof IntType){
+                b2i();
+            }
+        }
+    }
+
+    public void comparison(String operator, Type type){
+        if (operator.equals(">")){
+            gt(type);
+        } else if (operator.equals(">=")){
+            ge(type);
+        } else if (operator.equals("<")){
+            lt(type);
+        } else if (operator.equals("<=")){
+            le(type);
+        } else if (operator.equals("==")){
+            eq(type);
+        } else if (operator.equals("!=")){
+            ne(type);
+        }
     }
 }

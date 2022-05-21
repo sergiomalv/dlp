@@ -18,6 +18,7 @@ public class FuncDefinition extends AbstractDefinition {
     // Variables of the class
     private List<Statement> statements; // Statements of the function
     private List<VarDefinition> variables;   // Variables of the function
+    private int localVariablesBytes = 0;
 
     /**
      * Constructor of a function definition
@@ -63,6 +64,14 @@ public class FuncDefinition extends AbstractDefinition {
 
     public List<Statement> getStatements() {
         return statements;
+    }
+
+    public int getLocalVariablesBytes() {
+        return localVariablesBytes;
+    }
+
+    public void setLocalVariablesBytes(int localVariablesBytes) {
+        this.localVariablesBytes = localVariablesBytes;
     }
 
     public List<VarDefinition> getVariables() {
