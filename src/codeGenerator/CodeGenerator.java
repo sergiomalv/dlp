@@ -1,4 +1,4 @@
-package ast;
+package codeGenerator;
 
 import ast.types.CharType;
 import ast.types.DoubleType;
@@ -12,6 +12,7 @@ public class CodeGenerator {
 
     // Variables of the class
     PrintWriter out;
+    int cont;
 
     public CodeGenerator(String output, String input){
         try {
@@ -211,7 +212,7 @@ public class CodeGenerator {
         out.flush();
     }
 
-    public void line(String constant){
+    public void line(int constant){
         out.println("#line\t" + constant);
         out.flush();
     }
@@ -261,6 +262,18 @@ public class CodeGenerator {
             eq(type);
         } else if (operator.equals("!=")){
             ne(type);
+        }
+    }
+
+    public int getLabel(){
+        return cont++;
+    }
+
+    public void logic(String operator){
+        if (operator.equals("||")){
+            or();
+        } else if (operator.equals("&&")){
+            and();
         }
     }
 }

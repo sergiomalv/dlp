@@ -134,12 +134,6 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
     }
 
     @Override
-    public TR visit(Invocation i, TP tp) {
-        i.getExpressions().forEach(varDefinition -> varDefinition.accept(this, tp));
-        return null;
-    }
-
-    @Override
     public TR visit(Print p, TP tp) {
         p.getExpressions().forEach(expression -> expression.accept(this, tp));
         return null;

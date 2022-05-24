@@ -105,11 +105,6 @@ public class AbstractCGVisitor<TP, TR> implements Visitor<TP, TR> {
     }
 
     @Override
-    public TR visit(Invocation i, TP tp) {
-        throw new IllegalStateException();
-    }
-
-    @Override
     public TR visit(Print p, TP tp) {
         throw new IllegalStateException();
     }

@@ -27,6 +27,10 @@ public class IntLiteral extends AbstractExpression{
         return v.visit(this, tp);
     }
 
+    public int getValue() {
+        return value;
+    }
+
     @Override
     public String toString() {
         return value+"";

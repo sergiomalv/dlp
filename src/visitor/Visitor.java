@@ -34,7 +34,6 @@ public interface Visitor<TP,TR> {
     TR visit(Assignment a, TP tp);
     TR visit(IfElse i, TP tp);
     TR visit(Input i, TP tp);
-    TR visit(Invocation i, TP tp);
     TR visit(Print p, TP tp);
     TR visit(Return r, TP tp);
     TR visit(While w, TP tp);

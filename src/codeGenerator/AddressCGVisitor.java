@@ -1,6 +1,6 @@
 package codeGenerator;
 
-import ast.CodeGenerator;
+import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
 import ast.expressions.ArrayAccess;
 import ast.expressions.FieldAccess;
@@ -9,7 +9,7 @@ import ast.types.ArrayType;
 import ast.types.IntType;
 import ast.types.StructType;
 
-public class AddressCGVisitor extends AbstractCGVisitor<Void, Void>{
+public class AddressCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
 
     // Variables of the class
     private CodeGenerator codeGenerator;
@@ -20,7 +20,7 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void>{
     }
 
     @Override
-    public Void visit(Variable variable, Void unused){
+    public Void visit(Variable variable, FuncDefinition unused){
         /*
         Address[[Variable: expression -> ID]]()=
 	        if (expression.definition.scope == 0){ //GLOBAL
@@ -41,11 +41,11 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void>{
     }
 
     @Override
-    public Void visit(ArrayAccess arrayAccess, Void unused){
+    public Void visit(ArrayAccess arrayAccess, FuncDefinition unused){
         /*
-        address[[Indexing: expression_1 -> expression_2 expression_3]]()=
-	        address[[expression_2]]()
-	        value[[expression_3]]()
+        Address[[Indexing: expression_1 -> expression_2 expression_3]]()=
+	        Address[[expression_2]]()
+	        Value[[expression_3]]()
 	        <PUSHI> expression_1.type.numberofbytes
 	        <MULTI>
 	        <ADDI>
@@ -60,10 +60,10 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void>{
     }
 
     @Override
-    public Void visit(FieldAccess fieldAccess, Void unused){
+    public Void visit(FieldAccess fieldAccess, FuncDefinition unused){
         /*
-        address[[FieldAccess: expression_1 -> expression_2 ID]]()=
-	        address[[expression_2]]()
+        Address[[FieldAccess: expression_1 -> expression_2 ID]]()=
+	        Address[[expression_2]]()
             <PUSHI> expression_2.type.id.offset
 	        <ADDI>
          */
@@ -77,4 +77,6 @@ public class AddressCGVisitor extends AbstractCGVisitor<Void, Void>{
     public void setValueCGVisitor(ValueCGVisitor valueCGVisitor){
         this.valueCGVisitor = valueCGVisitor;
     }
+
+
 }

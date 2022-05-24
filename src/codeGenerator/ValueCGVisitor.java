@@ -1,10 +1,11 @@
 package codeGenerator;
 
-import ast.CodeGenerator;
+import ast.definitions.FuncDefinition;
 import ast.expressions.*;
-import ast.types.ArrayType;
+import ast.types.IntType;
+import ast.types.StructType;
 
-public class ValueCGVisitor extends AbstractCGVisitor<Void, Void>{
+public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
 
     private CodeGenerator codeGenerator;
     private AddressCGVisitor addressCGVisitor;
@@ -14,7 +15,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void>{
     }
 
     @Override
-    public Void visit(Variable variable, Void unused){
+    public Void visit(Variable variable, FuncDefinition unused){
         /*
         Value[[Variable : expression -> ID]]()=
 			Address[[expression]]()
@@ -26,12 +27,12 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void>{
     }
 
     @Override
-    public Void visit(Arithmetic arithmetic, Void unused){
+    public Void visit(Arithmetic arithmetic, FuncDefinition unused){
         /*
         Value[[Arithmetic : expression -> left: expression right: expression operator: String]]()=
             Value[[left]]()
             Value[[right]]()
-            <Arithmetic> expression.left.type operator
+            <Arithmetic> expression.left.type <,> operator
          */
         arithmetic.getLeft().accept(this, null);
         arithmetic.getRight().accept(this, null);
@@ -40,10 +41,10 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void>{
     }
 
     @Override
-    public Void visit(ArrayAccess arrayAccess, Void unused){
+    public Void visit(ArrayAccess arrayAccess, FuncDefinition unused){
         /*
         Value[[ArrayAccess: expression -> left: expression right: expression]]()=
-            Address[[ArrayAccess]]
+            Address[[ArrayAccess]]()
             <LOAD> ArrayAccess.type
          */
         arrayAccess.accept(addressCGVisitor, null);
@@ -52,11 +53,11 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void>{
     }
 
     @Override
-    public Void visit(Cast cast, Void unused){
+    public Void visit(Cast cast, FuncDefinition unused){
         /*
         Value[[Cast: expression -> type : Type expr]]()=
-            Value[[Cast]]
-            <CAST> expr cast.type
+            Value[[Cast]]()
+            <CAST> expr <,> cast.type
          */
         cast.getExpression().accept(this, null);
         codeGenerator.cast(cast.getExpression().getType(), cast.getType());
@@ -64,7 +65,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void>{
     }
 
     @Override
-    public Void visit(CharLiteral charLiteral, Void unused){
+    public Void visit(CharLiteral charLiteral, FuncDefinition unused){
         /*
         Value[[CharLiteral : expression -> literal]]()=
             <PUSHB> CharLiteral.value
@@ -74,12 +75,12 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void>{
     }
 
     @Override
-    public Void visit(Comparison comparison, Void unused){
+    public Void visit(Comparison comparison, FuncDefinition unused){
         /*
-        Value[[Comparison : expression -> left: expression right: expression operator: string]]()=
-            Value[[left]]
-            Value[[right]]
-            <COMPARISON> operator comparison.type
+        Value[[Comparison : expression -> left: expression right: expression operator: String]]()=
+            Value[[left]]()
+            Value[[right]]()
+            <COMPARISON> operator <,> comparison.type
          */
         comparison.getLeft().accept(this, null);
         comparison.getRight().accept(this, null);
@@ -88,12 +89,96 @@ public class ValueCGVisitor extends AbstractCGVisitor<Void, Void>{
     }
 
     @Override
-    public Void visit(DoubleLiteral doubleLiteral, Void unused){
+    public Void visit(DoubleLiteral doubleLiteral, FuncDefinition unused){
         /*
         Value[[CharLiteral : expression -> literal]]()=
             <PUSHF> CharLiteral.value
          */
         codeGenerator.push(doubleLiteral.getValue());
         return null;
+    }
+
+    @Override
+    public Void visit(FieldAccess fieldAccess, FuncDefinition unused){
+        /*
+        Value[[FieldAccess : expr -> fieldName : String]]()=
+            Address[[expr]]()
+            <LOAD> expr.type
+         */
+        fieldAccess.accept(addressCGVisitor, null);
+        codeGenerator.load(((StructType) fieldAccess.getExpression().getType()).getField(fieldAccess.getFieldName())
+                .getType());
+        return null;
+    }
+
+    @Override
+    public Void visit(FunctionInvocation functionInvocation, FuncDefinition unused){
+        /*
+        Value[[FunctionInvocation: expression_1 -> expression_2 expression_3*]]()
+	        for(expression e : expression_3*)
+		        value[[e]]()
+	    <CALL> expression_2.name
+         */
+        for (Expression expr : functionInvocation.getExpressions()){
+            expr.accept(this, null);
+        }
+        codeGenerator.call(functionInvocation.getVar().getName());
+        return null;
+    }
+
+    @Override
+    public Void visit(IntLiteral intLiteral, FuncDefinition unused){
+        /*
+        Value[[IntLiteral : expr -> value: int]]()=
+            <PUSHI> expr.value
+         */
+        codeGenerator.push(intLiteral.getValue());
+        return null;
+    }
+
+    @Override
+    public Void visit(Logic logic, FuncDefinition unused){
+        /*
+        Value[[Logic : expression -> left: expression right: expression operator: String]]()=
+            Value[[left]]()
+            Value[[right]]()
+            <LOGIC> operator <,> comparison.type
+         */
+        logic.getLeft().accept(this, null);
+        logic.getRight().accept(this, null);
+        codeGenerator.logic(logic.getOperator());
+        return null;
+    }
+
+    @Override
+    public Void visit(Not not, FuncDefinition unused){
+        /*
+        Value[[Not : expression -> expr]]()=
+            Value[[expr]]()
+            <NOT>
+         */
+        not.getExpression().accept(this, null);
+        codeGenerator.not();
+        return null;
+    }
+
+    @Override
+    public Void visit(UnaryMinus unaryMinus, FuncDefinition unused){
+        /*
+        Value[[UnaryMinus : expression -> expr]]()=
+            <PUSHI> 0
+            <CAST> Int <,> expr.type
+            Value[[expr]]()
+            <SUB>
+         */
+        codeGenerator.push(0);
+        codeGenerator.cast(IntType.getIntType(), unaryMinus.getType());
+        unaryMinus.getExpression().accept(this, null);
+        codeGenerator.sub(unaryMinus.getType());
+        return null;
+    }
+
+    public void setAddressCGVisitor(AddressCGVisitor addressCGVisitor) {
+        this.addressCGVisitor = addressCGVisitor;
     }
 }
