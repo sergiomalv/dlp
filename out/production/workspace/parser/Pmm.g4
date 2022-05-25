@@ -30,14 +30,20 @@ simpleTypes returns [Type ast]
         | 'char' {$ast = CharType.getCharType();}
         ;
 
-fields returns [List<FieldType> ast = new ArrayList<FieldType>();]:
-        (f=field {if ($ast.contains($f.ast)){
-            ErrorHandler.getErrorHandler().addError(new ErrorType($f.ast.getLine(),
-            $f.ast.getColumn()+1, $f.ast.name));
-        } else {
-            $ast.add($f.ast);
-        }})+
-        ;
+fields returns [List<FieldType> ast = new ArrayList<FieldType>();]
+        locals [List<String> aux = new ArrayList<String>();]:
+                id1=ID {$aux.add($id1.text);}   (',' id2=ID {if ($aux.contains($id2.text)) {
+                    ErrorHandler.getErrorHandler().addError(new ErrorType($id2.getLine(),
+                    $id2.getCharPositionInLine()+1, $id2.text));
+                    } else {
+                        $aux.add($id2.text);
+                    }})*':' t=types ';'
+                { for (String v : $aux) {
+                        $ast.add(new FieldType($id1.getLine(), $id1.getCharPositionInLine()+1, v, $t.ast));
+                    }
+                }
+                ;
+
 field returns [FieldType ast]: ID ':' t=types ';' {$ast = new FieldType($ID.getLine(),
             $ID.getCharPositionInLine()+1, $ID.text, $t.ast);}
         ;
@@ -51,7 +57,7 @@ createFunction returns [FuncDefinition ast] locals [List<VarDefinition> aux = ne
         | 'def' ID '(' p=parametres ')'':''{' (c=createVar {$aux.addAll($c.ast);})*
         (s=sentences {$aux2.add($s.ast);})* '}'
         {$ast = new FuncDefinition($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text, new FunctionType(
-        $ID.getLine(), $ID.getCharPositionInLine()+1, VoidType.getVoidType(),
+        $ID.getLine(), $ID.getCharPositionInLine()+1, new VoidType(),
         $p.ast), $aux, $aux2);}
         ;
 
@@ -60,7 +66,7 @@ functionMain returns [FuncDefinition ast] locals [List<VarDefinition> aux = new 
         DEF='def main():' '{' (c=createVar {$aux.addAll($c.ast);})*
         (s=sentences {$aux2.add($s.ast);})* '}'
         {$ast = new FuncDefinition($DEF.getLine(), $DEF.getCharPositionInLine()+1, "main", new FunctionType(
-        $DEF.getLine(), $DEF.getCharPositionInLine()+1, VoidType.getVoidType(), new ArrayList<VarDefinition>()),
+        $DEF.getLine(), $DEF.getCharPositionInLine()+1, new VoidType(), new ArrayList<VarDefinition>()),
         $aux, $aux2);}
         ;
 
@@ -76,10 +82,6 @@ createVar returns [List<VarDefinition> ast = new ArrayList<VarDefinition>();]
                 $ast.add(new VarDefinition($id1.getLine(), $id1.getCharPositionInLine()+1, $t.ast, v));
             }
         }
-        ;
-
-vars returns [List<String> ast = new ArrayList<String>();]:
-        id=ID {$ast.add($id.text);}  (',' optional=ID {$ast.add($optional.text);})*
         ;
 
 parametres returns [List<VarDefinition> ast = new ArrayList<VarDefinition>();]:
@@ -141,17 +143,17 @@ expression returns [Expression ast]: '(' op1=expression ')' {$ast = $op1.ast;}
             $op1.ast.getColumn(), $op1.ast, $op2.ast, $OP.text);}
         | op1=expression OP=('>'|'>='|'<'|'<='|'!='|'==') op2=expression {$ast = new Comparison($op1.ast.getLine(),
             $op1.ast.getColumn(), $op1.ast, $op2.ast, $OP.text);}
-        | op1=expression OP=('&&'|'||') op2=expression {$ast = new Logic($op1.ast.getLine(),
+        | op1=expression OP=('||'|'&&') op2=expression {$ast = new Logic($op1.ast.getLine(),
             $op1.ast.getColumn(), $op1.ast, $op2.ast, $OP.text);}
         | ID '('fi=functionInvocation ')' {$ast = new FunctionInvocation($fi.start.getLine(),
                   $fi.start.getCharPositionInLine()+1, new Variable(
                   $fi.start.getLine(), $fi.start.getCharPositionInLine()+1, $ID.text), $fi.ast);}
         |INT_CONSTANT {$ast = new IntLiteral($INT_CONSTANT.getLine(),
-        $INT_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToInt($INT_CONSTANT.text));}
+                        $INT_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToInt($INT_CONSTANT.text));}
         | REAL_CONSTANT {$ast = new DoubleLiteral($REAL_CONSTANT.getLine(),
-        $REAL_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToReal($REAL_CONSTANT.text));}
+                        $REAL_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToReal($REAL_CONSTANT.text));}
         | CHAR_CONSTANT {$ast = new CharLiteral($CHAR_CONSTANT.getLine(),
-        $CHAR_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToChar($CHAR_CONSTANT.text));}
+                        $CHAR_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToChar($CHAR_CONSTANT.text));}
         | ID {$ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text); }
         ;
 
@@ -177,6 +179,7 @@ fragment
 ZERO: [0];
 
 INT_CONSTANT: (ZERO|NON_ZERO DIGIT*);
+
 
 ID: (LETTER|'_')(LETTER|'_'|DIGIT)*;
 

@@ -21,7 +21,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
 			Address[[expression]]()
 			<LOAD> expression.type
          */
-        variable.accept(addressCGVisitor, null);
+        variable.accept(addressCGVisitor, unused);
         codeGenerator.load(variable.getDefinition().getType());
         return null;
     }
@@ -34,8 +34,8 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
             Value[[right]]()
             <Arithmetic> expression.left.type <,> operator
          */
-        arithmetic.getLeft().accept(this, null);
-        arithmetic.getRight().accept(this, null);
+        arithmetic.getLeft().accept(this, unused);
+        arithmetic.getRight().accept(this, unused);
         codeGenerator.arithmetic(arithmetic.getOperator(), arithmetic.getType());
         return null;
     }
@@ -47,7 +47,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
             Address[[ArrayAccess]]()
             <LOAD> ArrayAccess.type
          */
-        arrayAccess.accept(addressCGVisitor, null);
+        arrayAccess.accept(addressCGVisitor, unused);
         codeGenerator.out(arrayAccess.getType());
         return null;
     }
@@ -59,7 +59,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
             Value[[Cast]]()
             <CAST> expr <,> cast.type
          */
-        cast.getExpression().accept(this, null);
+        cast.getExpression().accept(this, unused);
         codeGenerator.cast(cast.getExpression().getType(), cast.getType());
         return null;
     }
@@ -82,8 +82,8 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
             Value[[right]]()
             <COMPARISON> operator <,> comparison.type
          */
-        comparison.getLeft().accept(this, null);
-        comparison.getRight().accept(this, null);
+        comparison.getLeft().accept(this, unused);
+        comparison.getRight().accept(this, unused);
         codeGenerator.comparison(comparison.getOperator(), comparison.getType());
         return null;
     }
@@ -105,7 +105,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
             Address[[expr]]()
             <LOAD> expr.type
          */
-        fieldAccess.accept(addressCGVisitor, null);
+        fieldAccess.accept(addressCGVisitor, unused);
         codeGenerator.load(((StructType) fieldAccess.getExpression().getType()).getField(fieldAccess.getFieldName())
                 .getType());
         return null;
@@ -120,7 +120,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
 	    <CALL> expression_2.name
          */
         for (Expression expr : functionInvocation.getExpressions()){
-            expr.accept(this, null);
+            expr.accept(this, unused);
         }
         codeGenerator.call(functionInvocation.getVar().getName());
         return null;
@@ -144,8 +144,8 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
             Value[[right]]()
             <LOGIC> operator <,> comparison.type
          */
-        logic.getLeft().accept(this, null);
-        logic.getRight().accept(this, null);
+        logic.getLeft().accept(this, unused);
+        logic.getRight().accept(this, unused);
         codeGenerator.logic(logic.getOperator());
         return null;
     }
@@ -157,7 +157,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
             Value[[expr]]()
             <NOT>
          */
-        not.getExpression().accept(this, null);
+        not.getExpression().accept(this, unused);
         codeGenerator.not();
         return null;
     }
@@ -173,7 +173,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
          */
         codeGenerator.push(0);
         codeGenerator.cast(IntType.getIntType(), unaryMinus.getType());
-        unaryMinus.getExpression().accept(this, null);
+        unaryMinus.getExpression().accept(this, unused);
         codeGenerator.sub(unaryMinus.getType());
         return null;
     }

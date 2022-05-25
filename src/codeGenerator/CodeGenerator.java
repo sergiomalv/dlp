@@ -17,6 +17,7 @@ public class CodeGenerator {
     public CodeGenerator(String output, String input){
         try {
             out = new PrintWriter(output);
+            source(input);
         } catch (FileNotFoundException e) {
             System.err.println("File not found");
         }
@@ -28,7 +29,7 @@ public class CodeGenerator {
     }
 
     public void push(char c){
-        out.println("\tpushb\t" + c);
+        out.println("\tpushb\t" + (int)c);
         out.flush();
     }
 
@@ -38,7 +39,7 @@ public class CodeGenerator {
     }
 
     public void push(double d){
-        out.println("\tpushd\t" + d);
+        out.println("\tpushf\t" + d);
         out.flush();
     }
 
@@ -48,7 +49,7 @@ public class CodeGenerator {
     }
 
     public void store(Type type){
-        out.println("\tstore\t" + type.suffix());
+        out.println("\tstore" + type.suffix());
         out.flush();
     }
 
@@ -168,7 +169,7 @@ public class CodeGenerator {
     }
 
     public void label(String label){
-        out.println(label+":");
+        out.println(" " + label+":");
         out.flush();
     }
 
@@ -188,7 +189,7 @@ public class CodeGenerator {
     }
 
     public void call(String label){
-        out.println("\tcall\t" + label);
+        out.println("call " + label);
         out.flush();
     }
 
@@ -203,17 +204,17 @@ public class CodeGenerator {
     }
 
     public void halt(){
-        out.println("halt");
+        out.println("halt" + "\n");
         out.flush();
     }
 
     public void source(String constant){
-        out.println("#source\t" + constant);
+        out.println("\n" + "#source " + "\""+ constant + "\"" + "\n");
         out.flush();
     }
 
     public void line(int constant){
-        out.println("#line\t" + constant);
+        out.println("\n" + "#line\t" + constant);
         out.flush();
     }
 
@@ -239,12 +240,14 @@ public class CodeGenerator {
                 i2b();
             }
         } else if (from instanceof DoubleType) {
-            if (to instanceof  IntType){
-                f2i();
+            f2i();
+            if (to instanceof  CharType){
+                i2b();
             }
         } else if (from instanceof CharType){
-            if (to instanceof IntType){
-                b2i();
+            b2i();
+            if (to instanceof DoubleType){
+                i2f();
             }
         }
     }
@@ -275,5 +278,13 @@ public class CodeGenerator {
         } else if (operator.equals("&&")){
             and();
         }
+    }
+
+    public void commentVariables(String text){
+        out.println("\t' " + text);
+    }
+
+    public void functionComment(String text){
+        out.println("\n' " + text);
     }
 }

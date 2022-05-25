@@ -7,6 +7,7 @@ import ast.definitions.VarDefinition;
 import ast.expressions.Expression;
 import ast.expressions.FunctionInvocation;
 import ast.statements.*;
+import ast.types.FunctionType;
 import ast.types.VoidType;
 
 public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
@@ -38,24 +39,35 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
          */
         for (Definition de : program.getDefinitions()){
             if (de instanceof VarDefinition){
-                de.accept(this, null);
+                de.accept(this, unused);
             }
         }
-        codeGenerator.call("main");
+        codeGenerator.functionComment("Invocation to the main function");
+        codeGenerator.call(" main");
         codeGenerator.halt();
         for(Definition de : program.getDefinitions()){
             if (de instanceof FuncDefinition){
-                de.accept(this, null);
+                de.accept(this, unused);
             }
         }
         return null;
     }
 
     @Override
+    public Void visit(VarDefinition varDefinition, FuncDefinition unused){
+        codeGenerator.commentVariables("* " + varDefinition.getType() + " " + varDefinition.getName() +
+                " (offset " + varDefinition.getOffset() + ")");
+        return null;
+    }
+    @Override
     public Void visit(FuncDefinition funcDefinition, FuncDefinition unused){
         /*
         Execute[[FuncDefinition : definition -> name : String type statements*]]()=
             <ENTER> definition.localVariablesBytes
+            for (VarDefinition varDefinition : ((FunctionType) funcDefinition.getType()).parameters)
+                Execute[[varDefinition]]
+            for (VarDefinition varDefinition : funcDefinition.variables)
+                Execute[[varDefinition]]
             for (Statements state : statements*)
                 Execute[[state]]
             if (type.returnType instance of VoidType)
@@ -63,12 +75,23 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
          */
         codeGenerator.line(funcDefinition.getLine());
         codeGenerator.label(funcDefinition.getName());
-        codeGenerator.enter(funcDefinition.getLocalVariablesBytes());
-        for (Statement state : funcDefinition.getStatements()){
-            state.accept(this, unused);
+
+        codeGenerator.commentVariables("Parameters");
+        for (VarDefinition varDefinition : ((FunctionType) funcDefinition.getType()).getParameters()){
+            varDefinition.accept(this, unused);
         }
-        if (funcDefinition.getType() instanceof VoidType){
-            codeGenerator.ret(0, funcDefinition.getLocalVariablesBytes(),
+        codeGenerator.commentVariables("Local variables");
+        for (VarDefinition varDefinition : funcDefinition.getVariables()){
+            varDefinition.accept(this, unused);
+        }
+
+        codeGenerator.enter(funcDefinition.getLocalVariablesBytes() * -1);
+
+        for (Statement state : funcDefinition.getStatements()){
+            state.accept(this, funcDefinition);
+        }
+        if (((FunctionType)funcDefinition.getType()).getType() instanceof VoidType){
+            codeGenerator.ret(0, funcDefinition.getLocalVariablesBytes() * -1,
                     funcDefinition.getType().numberOfBytes());
         }
         return null;
@@ -164,8 +187,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
 		    Value[[expression]]()
 		    <OUT> expression.type.suffix
          */
-        codeGenerator.line(print.getLine());
         for(Expression expr : print.getExpressions()){
+            codeGenerator.line(print.getLine());
+            codeGenerator.functionComment("Write");
             expr.accept(valueCGVisitor, unused);
             codeGenerator.out(expr.getType());
         }
@@ -182,8 +206,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
          */
         codeGenerator.line(returnN.getLine());
         returnN.getExpression().accept(valueCGVisitor, unused);
-        codeGenerator.ret(returnN.getExpression().getType().numberOfBytes(), unused.getLocalVariablesBytes(),
-                unused.getType().numberOfBytes());
+        codeGenerator.ret(returnN.getExpression().getType().numberOfBytes(), unused.getLocalVariablesBytes() * -1,
+                ((FunctionType)unused.getType()).parameters());
         return null;
     }
 

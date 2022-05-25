@@ -51,6 +51,11 @@ public class ArrayType extends AbstractType{
     }
 
     @Override
+    public int numberOfBytes() {
+        return dimension * of.numberOfBytes();
+    }
+
+    @Override
     public String toString() {
         return "[" + dimension + "]" + of.toString();
     }

@@ -1,3 +1,5 @@
+import codeGenerator.CodeGenerator;
+import codeGenerator.ExecuteCGVisitor;
 import codeGenerator.OffsetVisitor;
 import errorhandler.ErrorHandler;
 import parser.*;
@@ -20,7 +22,7 @@ public class Main {
 		    }
 
 		 // create a lexer that feeds off of input CharStream
-		CharStream input = CharStreams.fromFileName(args[0]);
+		CharStream input = CharStreams.fromFileName(args[1]);
 		PmmLexer lexer = new PmmLexer(input);
 
 		// create a parser that feeds off the tokens buffer
@@ -39,8 +41,10 @@ public class Main {
 		}
 		else{
 			// * The AST is shown
-			IntrospectorModel model=new IntrospectorModel("Program", ast);
-			new IntrospectorTree("Introspector", model);
+			ExecuteCGVisitor executeCGVisitor = new ExecuteCGVisitor(new CodeGenerator(args[0], args[1]));
+			ast.accept(executeCGVisitor, null);
+			//IntrospectorModel model=new IntrospectorModel("Program", ast);
+			//new IntrospectorTree("Introspector", model);
 		}
 	}
 }

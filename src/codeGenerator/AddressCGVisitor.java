@@ -50,10 +50,10 @@ public class AddressCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
 	        <MULTI>
 	        <ADDI>
          */
-        arrayAccess.getLeft().accept(this, null);
-        arrayAccess.getRight().accept(this.valueCGVisitor, null);
+        arrayAccess.getLeft().accept(this, unused);
+        arrayAccess.getRight().accept(this.valueCGVisitor, unused);
         ArrayType array = (ArrayType) arrayAccess.getLeft().getType();
-        codeGenerator.push(array.numberOfBytes());
+        codeGenerator.push(array.getOf().numberOfBytes());
         codeGenerator.mul(IntType.getIntType());
         codeGenerator.add(IntType.getIntType());
         return null;
@@ -67,8 +67,8 @@ public class AddressCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
             <PUSHI> expression_2.type.id.offset
 	        <ADDI>
          */
-        fieldAccess.accept(this, null);
-        StructType type = (StructType) fieldAccess.getType();
+        fieldAccess.getExpression().accept(this, unused);
+        StructType type = (StructType) fieldAccess.getExpression().getType();
         codeGenerator.push(type.getField(fieldAccess.getFieldName()).getOffset());
         codeGenerator.add(IntType.getIntType());
         return null;
