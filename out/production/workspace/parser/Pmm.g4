@@ -115,6 +115,10 @@ sentences returns [Statement ast] locals [List<Expression> aux = new ArrayList<E
         (e1=expression {parameters.add($e1.ast);} (',' e2=expression {parameters.add($e2.ast);} )*)? ')'';'
         { $ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine() + 1,
         new Variable($ID.getLine(), $ID.getCharPositionInLine() + 1, $ID.text), parameters);}
+        | 'for' '(' s1=sentences condition=expression ';' increment=sentences ')'
+            '{' conditionBody '}'
+            {$ast= new For($s1.ast.getLine(), $s1.ast.getColumn(), $s1.ast, $condition.ast, $increment.ast,
+                $conditionBody.ast);}
         ;
 
 functionInvocation returns [List<Expression> ast = new ArrayList<Expression>();]:
@@ -143,6 +147,8 @@ expression returns [Expression ast]: '(' op1=expression ')' {$ast = $op1.ast;}
             $expr.ast);}
         | '-' op1=expression {$ast = new UnaryMinus($op1.ast.getLine(), $op1.ast.getColumn(), $op1.ast);}
         | '!' op1=expression {$ast = new Not($op1.ast.getLine(), $op1.ast.getColumn(), $op1.ast);}
+        | op1=expression OP='^' INT_CONSTANT {$ast = new Pow($op1.ast.getLine(), $op1.ast.getColumn(),
+            $op1.ast, LexerHelper.lexemeToInt($INT_CONSTANT.text));}
         | op1=expression OP=('*'|'/'|'%') op2=expression {$ast = new Arithmetic($op1.ast.getLine(),
             $op1.ast.getColumn(), $op1.ast, $op2.ast, $OP.text);}
         | op1=expression OP=('+'|'-') op2=expression {$ast = new Arithmetic($op1.ast.getLine(),

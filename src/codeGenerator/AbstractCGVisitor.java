@@ -163,4 +163,12 @@ public class AbstractCGVisitor<TP, TR> implements Visitor<TP, TR> {
     public TR visit(VoidType v, TP tp) {
         throw new IllegalStateException();
     }
+
+    @Override
+    public TR visit(For f, TP tp) {
+        throw new IllegalStateException();
+    }
+
+    @Override
+    public TR visit(Pow p, TP tp) {throw new IllegalStateException(); }
 }

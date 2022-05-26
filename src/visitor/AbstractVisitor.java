@@ -201,4 +201,19 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
     public TR visit(VoidType v, TP tp) {
         return null;
     }
+
+    @Override
+    public TR visit(For f, TP tp) {
+        f.getAssignment().accept(this, tp);
+        f.getCondition().accept(this, tp);
+        f.getIncrement().accept(this, tp);
+        f.getStatements().forEach(statement -> statement.accept(this, tp));
+        return null;
+    }
+
+    @Override
+    public TR visit(Pow pow, TP tp){
+        pow.getLeft().accept(this, tp);
+        return null;
+    }
 }

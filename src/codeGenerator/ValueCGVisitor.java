@@ -41,6 +41,23 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
     }
 
     @Override
+    public Void visit(Pow p, FuncDefinition unused){
+        /*
+        Value[[Pow : expression -> left : expr right : expr]]()=
+
+         */
+        int i = 1;
+        int fin = p.getRight();
+        p.getLeft().accept(this, unused);
+        while (i < fin){
+            p.getLeft().accept(this, unused);
+            codeGenerator.mul(p.getLeft().getType());
+            i++;
+        }
+        return null;
+    }
+
+    @Override
     public Void visit(ArrayAccess arrayAccess, FuncDefinition unused){
         /*
         Value[[ArrayAccess: expression -> left: expression right: expression]]()=

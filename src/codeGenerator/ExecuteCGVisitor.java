@@ -242,4 +242,36 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
         return null;
     }
 
+    @Override
+    public Void visit(For f, FuncDefinition funcDefinition){
+        /*
+        Execute[[For : statement -> assignment: statement condition : expression increment : expression
+            body : statement*]]()=
+            int condition = cg.getLabel()
+            int end = cg.getLabel();
+            Execute[[assignment]]
+            <LABEL_> condition <:>
+            Value[[condition]]()
+            <JZ label_> end
+            for(statement st: statements*)
+                Execute[[st]]()
+            Execute[[increment]]()
+            <JMP label_> condition
+            <LABEL_> end <:>
+         */
+        int condition = codeGenerator.getLabel();
+        int end = codeGenerator.getLabel();
+        f.getAssignment().accept(this, null);
+        codeGenerator.label("condition" + condition);
+        f.getCondition().accept(valueCGVisitor, null);
+        codeGenerator.jz("end" + end);
+        for (Statement state : f.getStatements()){
+            state.accept(this, null);
+        }
+        f.getIncrement().accept(this, null);
+        codeGenerator.jmp("condition" + condition);
+        codeGenerator.label("end" + end);
+        return null;
+    }
+
 }

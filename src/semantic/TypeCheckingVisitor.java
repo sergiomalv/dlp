@@ -24,6 +24,14 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
     }
 
     @Override
+    public Void visit(Pow pow, Type type) {
+        pow.setLValue(false);
+        super.visit(pow, type);
+        pow.setType(pow.getLeft().getType());
+        return null;
+    }
+
+    @Override
     public Void visit(Assignment a, Type unused) {
         super.visit(a, unused);
         if (!a.getLeft().getLValue()){
@@ -148,6 +156,19 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
 
         return null;
     }
+
+    @Override
+    public Void visit(For f, Type unused){
+        super.visit(f, unused);
+
+        if (!f.getCondition().getType().isLogical()){
+            new ErrorType(f.getCondition().getLine(), f.getCondition().getColumn(), f.getCondition().toString());
+        }
+
+        return null;
+    }
+
+
 
     @Override
     public Void visit(Return r, Type unused){
