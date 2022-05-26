@@ -43,7 +43,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
             }
         }
         codeGenerator.functionComment("Invocation to the main function");
-        codeGenerator.call(" main");
+        codeGenerator.call("main");
         codeGenerator.halt();
         for(Definition de : program.getDefinitions()){
             if (de instanceof FuncDefinition){
@@ -55,7 +55,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
 
     @Override
     public Void visit(VarDefinition varDefinition, FuncDefinition unused){
-        codeGenerator.commentVariables("* " + varDefinition.getType() + " " + varDefinition.getName() +
+        codeGenerator.commentVariables(varDefinition.getType() + " " + varDefinition.getName() +
                 " (offset " + varDefinition.getOffset() + ")");
         return null;
     }
@@ -106,6 +106,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
             <STORE> left.type
          */
         codeGenerator.line(assignment.getLine());
+        codeGenerator.commentVariables("Assignment");
         assignment.getLeft().accept(addressCGVisitor, unused);
         assignment.getRight().accept(valueCGVisitor, unused);
         codeGenerator.store(assignment.getLeft().getType());
@@ -149,17 +150,17 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
         int elseN = codeGenerator.getLabel();
         int end = codeGenerator.getLabel();
         ifElse.getExpression().accept(valueCGVisitor, unused);
-        codeGenerator.jz("else " + elseN);
+        codeGenerator.jz("else" + elseN);
         for (Statement st : ifElse.getIfBody()){
             st.accept(this, unused);
         }
-        codeGenerator.jmp("end " + end);
+        codeGenerator.jmp("end" + end);
         codeGenerator.label("else" + elseN);
         for (Statement st : ifElse.getElseBody()){
             st.accept(this, unused);
         }
-        codeGenerator.jmp("end " + end);
-        codeGenerator.label("end " + end);
+        codeGenerator.jmp("end" + end);
+        codeGenerator.label("end" + end);
         return null;
     }
 
@@ -173,6 +174,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
          */
         codeGenerator.line(input.getLine());
         for (Expression expr : input.getExpressions()){
+            codeGenerator.commentVariables("Read");
             expr.accept(addressCGVisitor, unused);
             codeGenerator.in(expr.getType());
             codeGenerator.store(expr.getType());
@@ -189,7 +191,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
          */
         for(Expression expr : print.getExpressions()){
             codeGenerator.line(print.getLine());
-            codeGenerator.functionComment("Write");
+            codeGenerator.commentVariables("Write");
             expr.accept(valueCGVisitor, unused);
             codeGenerator.out(expr.getType());
         }
@@ -205,6 +207,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
 	            funcDefinition.type.numberOfBytes
          */
         codeGenerator.line(returnN.getLine());
+        codeGenerator.commentVariables("Return");
         returnN.getExpression().accept(valueCGVisitor, unused);
         codeGenerator.ret(returnN.getExpression().getType().numberOfBytes(), unused.getLocalVariablesBytes() * -1,
                 ((FunctionType)unused.getType()).parameters());
@@ -228,14 +231,14 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
         codeGenerator.line(whileN.getLine());
         int condition = codeGenerator.getLabel();
         int end = codeGenerator.getLabel();
-        codeGenerator.label("condition: " + condition);
+        codeGenerator.label("condition" + condition);
         whileN.getExpression().accept(valueCGVisitor, unused);
-        codeGenerator.jz("end: " + end);
+        codeGenerator.jz("end" + end);
         for (Statement state : whileN.getStatements()){
             state.accept(this, unused);
         }
-        codeGenerator.jmp("condition: " + condition);
-        codeGenerator.label("end: " + end);
+        codeGenerator.jmp("condition" + condition);
+        codeGenerator.label("end" + end);
         return null;
     }
 

@@ -939,6 +939,7 @@ public class PmmParser extends Parser {
 		public ConditionBodyContext c1;
 		public ConditionBodyContext c2;
 		public ConditionBodyContext c;
+		public Token ret;
 		public Token ID;
 		public ExpressionContext e1;
 		public ExpressionContext e2;
@@ -1081,12 +1082,12 @@ public class PmmParser extends Parser {
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(249);
-				match(T__21);
+				((SentencesContext)_localctx).ret = match(T__21);
 				setState(250);
 				((SentencesContext)_localctx).expr = expression(0);
 				setState(251);
 				match(T__10);
-				((SentencesContext)_localctx).ast =  new Return(((SentencesContext)_localctx).expr.ast.getLine(), ((SentencesContext)_localctx).expr.ast.getColumn(),
+				((SentencesContext)_localctx).ast =  new Return(((SentencesContext)_localctx).ret.getLine(), ((SentencesContext)_localctx).ret.getCharPositionInLine()+1,
 				            ((SentencesContext)_localctx).expr.ast);
 				}
 				break;

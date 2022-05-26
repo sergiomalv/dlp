@@ -48,7 +48,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
             <LOAD> ArrayAccess.type
          */
         arrayAccess.accept(addressCGVisitor, unused);
-        codeGenerator.out(arrayAccess.getType());
+        codeGenerator.load(arrayAccess.getType());
         return null;
     }
 

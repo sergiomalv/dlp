@@ -71,7 +71,7 @@ public class StructType extends AbstractType {
 
     @Override
     public String toString() {
-        return "struct {\n" + fields.toString() + "\n}";
+        return "struct {" + fields.toString() + "}";
     }
 
     public List<FieldType> getFields() {

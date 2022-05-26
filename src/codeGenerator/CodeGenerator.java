@@ -169,7 +169,7 @@ public class CodeGenerator {
     }
 
     public void label(String label){
-        out.println(" " + label+":");
+        out.println("\n " + label + ":");
         out.flush();
     }
 
@@ -199,7 +199,7 @@ public class CodeGenerator {
     }
 
     public void ret(int constant, int l, int p){
-        out.println("\tret\t" + constant + "," + l + "," + p);
+        out.println("\tret\t" + constant + ", " + l + ", " + p);
         out.flush();
     }
 
@@ -281,7 +281,7 @@ public class CodeGenerator {
     }
 
     public void commentVariables(String text){
-        out.println("\t' " + text);
+        out.println("\t' * " + text);
     }
 
     public void functionComment(String text){
