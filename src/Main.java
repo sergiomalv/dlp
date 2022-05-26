@@ -43,8 +43,8 @@ public class Main {
 			// * The AST is shown
 			ExecuteCGVisitor executeCGVisitor = new ExecuteCGVisitor(new CodeGenerator(args[0], args[1]));
 			ast.accept(executeCGVisitor, null);
-			//IntrospectorModel model=new IntrospectorModel("Program", ast);
-			//new IntrospectorTree("Introspector", model);
+			IntrospectorModel model=new IntrospectorModel("Program", ast);
+			new IntrospectorTree("Introspector", model);
 		}
 	}
 }

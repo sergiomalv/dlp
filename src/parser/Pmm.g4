@@ -158,7 +158,7 @@ expression returns [Expression ast]: '(' op1=expression ')' {$ast = $op1.ast;}
         ;
 
 fragment
-LETTER: [a-z|A-Z];
+LETTER: [a-zA-Z];
 
 fragment
 DIGIT: [0-9];
