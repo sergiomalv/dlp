@@ -17,8 +17,17 @@ program returns [Program ast] locals [List<Definition> aux = new ArrayList<Defin
 
 types returns [Type ast] locals [List<FieldType> aux = new ArrayList<FieldType>();]
        : s=simpleTypes {$ast= $s.ast;}
-        |'struct' '{'(f=fields {$aux.addAll($f.ast);})+'}' {$ast = new StructType($f.start.getLine(),
-        $f.start.getCharPositionInLine()+1, $aux);}
+        |'struct' '{'(f=fields
+            { for (FieldType actual : $f.ast){
+                if ($aux.contains(actual)){
+                    ErrorHandler.getErrorHandler().addError(new ErrorType(actual.getLine(),
+                        actual.getColumn(), actual.getName()));
+                } else {
+                    $aux.add(actual);
+                }
+            }
+            })+'}' {$ast = new StructType($f.start.getLine(),
+            $f.start.getCharPositionInLine()+1, $aux);}
         | '[' INT_CONSTANT ']' t=types {$ast = new ArrayType($INT_CONSTANT.getLine(),
         $INT_CONSTANT.getCharPositionInLine()+1,
             LexerHelper.lexemeToInt($INT_CONSTANT.text), $t.ast);}
@@ -44,9 +53,6 @@ fields returns [List<FieldType> ast = new ArrayList<FieldType>();]
                 }
                 ;
 
-field returns [FieldType ast]: ID ':' t=types ';' {$ast = new FieldType($ID.getLine(),
-            $ID.getCharPositionInLine()+1, $ID.text, $t.ast);}
-        ;
 
 createFunction returns [FuncDefinition ast] locals [List<VarDefinition> aux = new ArrayList<VarDefinition>(),
         List<Statement> aux2 = new ArrayList<Statement>();]:

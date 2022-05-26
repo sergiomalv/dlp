@@ -43,12 +43,6 @@ public interface PmmVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFields(PmmParser.FieldsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PmmParser#field}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitField(PmmParser.FieldContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PmmParser#createFunction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
