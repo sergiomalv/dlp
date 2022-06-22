@@ -30,6 +30,7 @@ public interface Visitor<TP,TR> {
     TR visit(Not n, TP tp);
     TR visit(UnaryMinus u, TP tp);
     TR visit(Variable v, TP tp);
+    TR visit(BooleanLiteral booleanLiteral, TP tp);
     // Package statements
     TR visit(Assignment a, TP tp);
     TR visit(IfElse i, TP tp);
@@ -47,4 +48,5 @@ public interface Visitor<TP,TR> {
     TR visit(IntType i, TP tp);
     TR visit(StructType s, TP tp);
     TR visit(VoidType v, TP tp);
+    TR visit(BooleanType booleanType, TP tp);
 }

@@ -1,0 +1,31 @@
+def f(a: boolean, b: boolean, c: boolean): boolean{
+    return (a && b) || !c;
+}
+
+def main(): {
+    b1, b2, b3, b4: boolean;
+    a: int;
+
+    print(f(true, false, false));       # Imprime 1
+    print(f(true, false, true));        # Imprime 0
+    print(f(false, true, true));        # Imprime 0
+    print(f(false, false, false));      # Imprime 1
+
+    b1 = true;
+    b2 = 3 > 1;
+    b3 = 4.5 <= 4.2;
+    print b1;                           # Imprime 1
+    print b2;                           # Imprime 1
+    print b3;                           # Imprime 0
+
+    if(b1):
+        print 'Y';
+    else
+        print 'N';
+
+    a = 0;
+    while (a<10): {
+    print a;                            # Imprime 0123456789
+        a = a+1;
+    }
+}

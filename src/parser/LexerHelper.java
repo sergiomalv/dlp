@@ -22,6 +22,13 @@ public class LexerHelper {
 		return -1;
 	}
 
+	public static boolean lexemeToBool(String str){
+		if (str.equals("true")){
+			return true;
+		}
+		return false;
+	}
+
 	public static char lexemeToChar(String str){
 		char c = 9999;
 		try {

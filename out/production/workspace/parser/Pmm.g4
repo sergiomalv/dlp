@@ -37,6 +37,7 @@ simpleTypes returns [Type ast]
         : 'int' {$ast = IntType.getIntType();}
         | 'double' {$ast = DoubleType.getDoubleType();}
         | 'char' {$ast = CharType.getCharType();}
+        | 'boolean' {$ast = BooleanType.getBooleanType();}
         ;
 
 fields returns [List<FieldType> ast = new ArrayList<FieldType>();]
@@ -161,6 +162,8 @@ expression returns [Expression ast]: '(' op1=expression ')' {$ast = $op1.ast;}
         | CHAR_CONSTANT {$ast = new CharLiteral($CHAR_CONSTANT.getLine(),
                         $CHAR_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToChar($CHAR_CONSTANT.text));}
         | ID {$ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text); }
+        | BOOLEAN_CONSTANT {$ast = new BooleanLiteral($BOOLEAN_CONSTANT.getLine(),
+            $BOOLEAN_CONSTANT.getCharPositionInLine()+1, LexerHelper.lexemeToBool($BOOLEAN_CONSTANT.text));}
         ;
 
 fragment
@@ -186,6 +189,7 @@ ZERO: [0];
 
 INT_CONSTANT: (ZERO|NON_ZERO DIGIT*);
 
+BOOLEAN_CONSTANT: ('true'|'false');
 
 ID: (LETTER|'_')(LETTER|'_'|DIGIT)*;
 

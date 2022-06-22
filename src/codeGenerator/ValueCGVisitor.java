@@ -84,7 +84,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
          */
         comparison.getLeft().accept(this, unused);
         comparison.getRight().accept(this, unused);
-        codeGenerator.comparison(comparison.getOperator(), comparison.getType());
+        codeGenerator.comparison(comparison.getOperator(), comparison.getLeft().getType());
         return null;
     }
 
@@ -133,6 +133,16 @@ public class ValueCGVisitor extends AbstractCGVisitor<FuncDefinition, Void>{
             <PUSHI> expr.value
          */
         codeGenerator.push(intLiteral.getValue());
+        return null;
+    }
+
+    @Override
+    public Void visit(BooleanLiteral booleanLiteral, FuncDefinition unused){
+        /*
+        Value[[BooleanLiteral : expr -> value : bool]]()=
+            <PUSHI> expr.value
+         */
+        codeGenerator.push(booleanLiteral.getValue());
         return null;
     }
 

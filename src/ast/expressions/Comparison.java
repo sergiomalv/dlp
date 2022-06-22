@@ -1,5 +1,8 @@
 package ast.expressions;
 
+import ast.AstNode;
+import ast.types.ErrorType;
+import ast.types.Type;
 import visitor.Visitor;
 
 /**
@@ -48,6 +51,7 @@ public class Comparison extends AbstractExpression{
             throw new IllegalArgumentException("Operator shouldn't be null");
         }
     }
+
 
     @Override
     public String toString() {

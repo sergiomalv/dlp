@@ -89,6 +89,9 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
     }
 
     @Override
+    public TR visit(BooleanLiteral b, TP tp) {return null; }
+
+    @Override
     public TR visit(Logic l, TP tp) {
         l.getLeft().accept(this, tp);
         l.getRight().accept(this, tp);
@@ -201,4 +204,7 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
     public TR visit(VoidType v, TP tp) {
         return null;
     }
+
+    @Override
+    public TR visit(BooleanType b, TP tp) {return null;}
 }

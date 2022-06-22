@@ -38,6 +38,11 @@ public class CodeGenerator {
         out.flush();
     }
 
+    public void pushBool(int i){
+        out.println("\tpushb\t" + i);
+        out.flush();
+    }
+
     public void push(double d){
         out.println("\tpushf\t" + d);
         out.flush();

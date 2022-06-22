@@ -31,7 +31,7 @@ public class IntType extends AbstractType{
 
     @Override
     public boolean isLogical(){
-        return true;
+        return false;
     }
 
     @Override
@@ -50,6 +50,7 @@ public class IntType extends AbstractType{
 
     @Override
     public Type comparison(Type type, AstNode node) {
+
         if (type.equals(this) || type instanceof ErrorType){
             return type;
         }
