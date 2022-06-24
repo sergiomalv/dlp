@@ -63,4 +63,8 @@ public class ArrayType extends AbstractType{
     public Type getOf() {
         return of;
     }
+
+    public int getDimension(){
+        return  dimension;
+    }
 }

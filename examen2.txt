@@ -1,0 +1,17 @@
+v2:[2]int;
+v4:[4]int;
+no_simple:[3][5]int;
+
+a:int;
+b:int;
+c:int;
+
+x:double;
+
+def main(): {
+    [a,b] = x;
+    [a,b] = no_simple;
+    [a,b,c] = v2;
+    [a, x] = v4;
+    [a, 5] = v4;
+}

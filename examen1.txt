@@ -1,0 +1,19 @@
+v:[4]int;
+a:int;
+
+pepe:struct {
+    edad:int;
+};
+
+def main(): {
+    v[0] = 0;
+    v[1] = 100;
+    v[2] = 200;
+    v[3] = 300;
+
+    [a, v[0], pepe.edad] = v;
+
+    print a;
+    print v[0];
+    print pepe.edad;
+}

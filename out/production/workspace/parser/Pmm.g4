@@ -115,6 +115,9 @@ sentences returns [Statement ast] locals [List<Expression> aux = new ArrayList<E
         (e1=expression {parameters.add($e1.ast);} (',' e2=expression {parameters.add($e2.ast);} )*)? ')'';'
         { $ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine() + 1,
         new Variable($ID.getLine(), $ID.getCharPositionInLine() + 1, $ID.text), parameters);}
+        | '[' first=expression {$aux.add($first.ast);}( ',' opt=expression {$aux.add($opt.ast);})*
+            ']' '=' right=expression ';'
+        {$ast = new Destructuring($first.ast.getLine(), $first.ast.getColumn(), $aux, $right.ast);}
         ;
 
 functionInvocation returns [List<Expression> ast = new ArrayList<Expression>();]:

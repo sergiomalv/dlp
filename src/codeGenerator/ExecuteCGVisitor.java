@@ -7,7 +7,9 @@ import ast.definitions.VarDefinition;
 import ast.expressions.Expression;
 import ast.expressions.FunctionInvocation;
 import ast.statements.*;
+import ast.types.ArrayType;
 import ast.types.FunctionType;
+import ast.types.IntType;
 import ast.types.VoidType;
 
 public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
@@ -110,6 +112,35 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<FuncDefinition, Void> {
         assignment.getLeft().accept(addressCGVisitor, unused);
         assignment.getRight().accept(valueCGVisitor, unused);
         codeGenerator.store(assignment.getLeft().getType());
+        return null;
+    }
+
+    @Override
+    public Void visit(Destructuring destructuring, FuncDefinition unused){
+        /*
+        Execute[[Destructuring : statement -> left : expr+ right : expr]]()=
+            for(int i = 0; i < total; i++)
+                Address[[elem]]() {i}
+                Address[[right]]()
+	            Value[[i]]()
+	            <PUSHI> eleme[i].type.numberofbytes
+	            <MULTI>
+	            <ADDI>
+	            STORE
+         */
+        codeGenerator.line(destructuring.getLine());
+        codeGenerator.commentVariables("Destructuring");
+        int total = destructuring.getLeft().size();
+        for (int i = 0; i < total; i++){
+            destructuring.getLeft().get(i).accept(addressCGVisitor, unused);
+            destructuring.getRight().accept(addressCGVisitor, unused);
+            codeGenerator.push(i);
+            codeGenerator.push(destructuring.getLeft().get(i).getType().numberOfBytes());
+            codeGenerator.mul(IntType.getIntType());
+            codeGenerator.add(IntType.getIntType());
+            codeGenerator.load(destructuring.getLeft().get(i).getType());
+            codeGenerator.store(destructuring.getLeft().get(i).getType());
+        }
         return null;
     }
 

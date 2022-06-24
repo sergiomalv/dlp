@@ -120,6 +120,13 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
     }
 
     @Override
+    public TR visit(Destructuring d, TP tp){
+        d.getLeft().forEach(expression -> expression.accept(this, tp));
+        d.getRight().accept(this, tp);
+        return null;
+    }
+
+    @Override
     public TR visit(IfElse i, TP tp) {
         i.getExpression().accept(this, tp);
         i.getIfBody().forEach(statement -> statement.accept(this, tp));

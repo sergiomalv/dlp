@@ -47,4 +47,7 @@ public interface Visitor<TP,TR> {
     TR visit(IntType i, TP tp);
     TR visit(StructType s, TP tp);
     TR visit(VoidType v, TP tp);
+
+    // EXAM
+    TR visit(Destructuring destructuring, TP tp);
 }

@@ -4,6 +4,7 @@ import ast.definitions.FuncDefinition;
 import ast.expressions.*;
 import ast.statements.*;
 import ast.types.*;
+import errorhandler.ErrorHandler;
 import visitor.AbstractVisitor;
 
 public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
@@ -32,6 +33,31 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
         a.getLeft().setType(a.getRight().getType().promotesTo(a.getLeft().getType(), a));
         return null;
     }
+
+    @Override
+    public Void visit(Destructuring d, Type unused) {
+        super.visit(d, unused);
+        if (d.getRight().getType() instanceof ArrayType){
+            if (((ArrayType) d.getRight().getType()).getDimension() < d.getLeft().size()){
+                ErrorHandler.getErrorHandler().addError(new ErrorType(d.getLine(),d.getColumn() , "La lista de elementos" +
+                        " contiene más elementos de los esperados."));
+            }
+            for (Expression expression : d.getLeft()){
+                expression.setType(((ArrayType) d.getRight().getType()).getOf().promotesTo(expression.getType(), d));
+            }
+        } else {
+            new ErrorType(d.getRight().getLine(), d.getRight().getColumn(), "A la derecha debe de haber un array");
+        }
+
+        for (Expression expression : d.getLeft()){
+            if (!expression.getLValue()){
+                new ErrorType(expression.getLine(), expression.getColumn(), expression.toString());
+            }
+        }
+
+        return null;
+    }
+
 
     @Override
     public Void visit(ArrayAccess a, Type unused) {
@@ -162,4 +188,5 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void> {
         super.visit(f, ((FunctionType)f.getType()).getType());
         return null;
     }
+
 }

@@ -3,6 +3,7 @@ package semantic;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
 import ast.expressions.Variable;
+import ast.statements.Destructuring;
 import ast.types.ErrorType;
 import symboltable.SymbolTable;
 import visitor.AbstractVisitor;
